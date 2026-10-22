@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: rgb(144, 175, 175);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.contenedor {
+    background-color: rgb(95, 125, 125);
+    width: 100%;
+    max-width: 480px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.contenedor-login {
+    max-width: 380px;
+}
+
+h1,
+h2 {
+    color: beige;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid rgb(134, 124, 120);
+    padding-bottom: 10px;
+}
+
+h1 { font-size: 26px; }
+h2 { font-size: 24px; }
+
+.grupo-input {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    color: beige;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="tel"],
+input[type="email"],
+select {
+    padding: 10px;
+    border: 1px solid rgb(134, 124, 120);
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: #fff;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: rgb(172, 171, 160);
+    box-shadow: 0 0 0 3px rgba(245, 245, 220, 0.4);
+}
+
+
+.grupo-radios {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.radio {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: normal;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.grupo-botones {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-guardar {
+    background-color: #2e8b57;
+    color: #fff;
+}
+
+.btn-guardar:hover {
+    background-color: #246b44;
+}
+
+.btn-limpiar {
+    background-color: #c9c2b8;
+    color: #333;
+}
+
+.btn-limpiar:hover {
+    background-color: #b0a99e;
+}
+
