@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLUB ACERÍAS - Registro de Pago</title>
+    <!-- Bootstrap 5.3.0 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Bootstrap Icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        .header-mr { 
+            background-color: #1177a0; 
+            color: #fff; 
+            padding: 1rem 1.5rem; 
+            border-bottom: 4px solid #0b2286; 
+        }
+        .form-card { 
+            border-top: 4px solid #1177a0; 
+            transition: box-shadow .15s; 
+        }
+        .form-card:hover { 
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
+        }
+        .icono-seccion { 
+            font-size: 2.75rem; 
+            color: #1177a0; 
+        }
+        .btn-primary-custom {
+            background-color: #1177a0;
+            border-color: #1177a0;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .btn-primary-custom:hover {
+            background-color: #0e5e7e;
+            border-color: #0b4e69;
+            color: #ffffff;
+        }
+        .section-title {
+            color: #1177a0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.4rem;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Encabezado Institucional -->
+    <header class="header-mr shadow-sm d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-buildings-fill fs-3"></i>
+            <h3 class="m-0 fw-bold">CLUB ACERÍAS</h3>
+        </div>
+        <div>
+            <a href="dashboard.html" class="btn btn-outline-light btn-sm shadow-sm">
+                <i class="bi bi-arrow-left-circle me-1"></i> Volver al Panel
+            </a>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal -->
+    <main class="container py-4 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-9">
+
+                <!-- Tarjeta del Formulario -->
+                <div class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3">
+                    
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <i class="bi bi-cash-coin icono-seccion"></i>
+                        <div>
+                            <h3 class="fw-bold text-dark m-0">Registro de Pago</h3>
+                            <p class="text-muted small m-0">Asienta pagos de membresías, abonos a préstamos, aportes y eventos del club</p>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje de confirmación -->
+                    <div id="alertaExito" class="alert alert-success alert-dismissible fade d-none" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <strong>¡Pago registrado con éxito!</strong> El comprobante y la transacción han sido archivados.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+
+                    <form id="formRegistroPago" action="" method="post" enctype="multipart/form-data" novalidate>
+                        
+                        <!-- Bloque 1: Identificación del Asociado y Comprobante -->
+                        <h5 class="section-title">
+                            <i class="bi bi-person-badge-fill me-2"></i>1. Datos del Asociado y Comprobante
+                        </h5>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="numeroRecibo" class="form-label fw-semibold">N° Recibo / Comprobante <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-receipt text-muted"></i></span>
+                                    <input type="text" class="form-control" id="numeroRecibo" name="numeroRecibo" required placeholder="Ej: REC-2026-0042">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="documentoAsociado" class="form-label fw-semibold">Documento Asociado <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-card-text text-muted"></i></span>
+                                    <input type="text" class="form-control" id="documentoAsociado" name="documentoAsociado" inputmode="numeric" pattern="[0-9]+" required placeholder="Ej: 1057000111">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="nombreAsociado" class="form-label fw-semibold">Nombre Completo <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person-fill text-muted"></i></span>
+                                    <input type="text" class="form-control" id="nombreAsociado" name="nombreAsociado" required placeholder="Nombre del titular">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 2: Información del Pago -->
+                        <h5 class="section-title">
+                            <i class="bi bi-wallet2 me-2"></i>2. Detalle del Pago
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="conceptoPago" class="form-label fw-semibold">Concepto del Pago <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-card-checklist text-muted"></i></span>
+                                    <select class="form-select" id="conceptoPago" name="conceptoPago" required>
+                                        <option value="" disabled selected>Seleccione el concepto</option>
+                                        <option value="Cuota Mensual Ordinaria">Cuota Mensual Ordinaria</option>
+                                        <option value="Abono a Préstamo">Abono a Préstamo</option>
+                                        <option value="Inscripción a Actividad/Evento">Inscripción a Actividad/Evento</option>
+                                        <option value="Cuota Extraordinaria">Cuota Extraordinaria</option>
+                                        <option value="Cuota de Afiliación">Cuota de Afiliación</option>
+                                        <option value="Multa / Recargo">Multa / Recargo</option>
+                                        <option value="Otro">Otro Concepto</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="numeroPrestamo" class="form-label fw-semibold">N° Préstamo / Referencia (Opcional)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-file-earmark-text text-muted"></i></span>
+                                    <input type="text" class="form-control" id="numeroPrestamo" name="numeroPrestamo" placeholder="Ej: PREST-2026-015 (si aplica)">
+                                </div>
+                                <div class="form-text">Completar únicamente si el abono corresponde a un préstamo.</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="monto" class="form-label fw-semibold">Valor del Pago ($ COP) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-currency-dollar text-muted"></i></span>
+                                    <input type="number" class="form-control" id="monto" name="monto" min="1000" step="500" required placeholder="Ej: 150000">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="fechaPago" class="form-label fw-semibold">Fecha de Pago <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-calendar-event text-muted"></i></span>
+                                    <input type="date" class="form-control" id="fechaPago" name="fechaPago" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="metodoPago" class="form-label fw-semibold">Método de Pago <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-credit-card-2-front-fill text-muted"></i></span>
+                                    <select class="form-select" id="metodoPago" name="metodoPago" required>
+                                        <option value="" disabled selected>Seleccione método</option>
+                                        <option value="Efectivo">Efectivo en Caja</option>
+                                        <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                                        <option value="PSE / Débito">PSE / Débito en Línea</option>
+                                        <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                                        <option value="Descuento por Nómina">Descuento por Nómina</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 3: Datos de Transacción y Soporte -->
+                        <h5 class="section-title">
+                            <i class="bi bi-shield-check me-2"></i>3. Transacción, Soporte y Estado
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="entidadBancaria" class="form-label fw-semibold">Entidad / Banco</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-bank text-muted"></i></span>
+                                    <select class="form-select" id="entidadBancaria" name="entidadBancaria">
+                                        <option value="Caja Club Acerías" selected>Caja Club Acerías</option>
+                                        <option value="Bancolombia">Bancolombia</option>
+                                        <option value="Davivienda">Davivienda</option>
+                                        <option value="Banco de Bogotá">Banco de Bogotá</option>
+                                        <option value="Nequi">Nequi</option>
+                                        <option value="Daviplata">Daviplata</option>
+                                        <option value="Otro">Otro Banco</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="numeroTransaccion" class="form-label fw-semibold">N° Transacción / Aprobación</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-hash text-muted"></i></span>
+                                    <input type="text" class="form-control" id="numeroTransaccion" name="numeroTransaccion" placeholder="Ej: 987654321">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="estadoPago" class="form-label fw-semibold">Estado del Pago <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-check2-circle text-muted"></i></span>
+                                    <select class="form-select" id="estadoPago" name="estadoPago" required>
+                                        <option value="Aprobado" selected>Aprobado / Confirmado</option>
+                                        <option value="En Verificación">En Verificación</option>
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Rechazado">Rechazado</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="soportePago" class="form-label fw-semibold">Adjuntar Comprobante Digital (PDF, JPG, PNG)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-file-earmark-arrow-up-fill text-muted"></i></span>
+                                    <input type="file" class="form-control" id="soportePago" name="soportePago" accept=".pdf,image/*">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="observacionesPago" class="form-label fw-semibold">Observaciones / Notas Adicionales</label>
+                                <textarea class="form-control" id="observacionesPago" name="observacionesPago" rows="2" placeholder="Detalles adicionales sobre el pago o cuota saldada..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-flex flex-wrap gap-2 justify-content-end pt-3 border-top">
+                            <button type="reset" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-eraser me-1"></i> Limpiar Campos
+                            </button>
+                            <button type="submit" class="btn btn-primary-custom px-4 shadow-sm">
+                                <i class="bi bi-check-lg me-1"></i> Registrar Pago
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Pie de página -->
+                <div class="text-center mt-3 text-muted small">
+                    &copy; 2026 Club Acerías - Sistema de Control y Gestión de Pagos
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Establecer fecha actual por defecto
+        document.addEventListener('DOMContentLoaded', () => {
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('fechaPago').value = hoy;
+        });
+
+        document.getElementById('formRegistroPago').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!this.checkValidity()) {
+                e.stopPropagation();
+                this.classList.add('was-validated');
+                return;
+            }
+            
+            // Simulación de guardado exitoso
+            const alerta = document.getElementById('alertaExito');
+            alerta.classList.remove('d-none');
+            alerta.classList.add('show');
+            
+            alerta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => {
+                this.reset();
+                this.classList.remove('was-validated');
+                const hoy = new Date().toISOString().split('T')[0];
+                document.getElementById('fechaPago').value = hoy;
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

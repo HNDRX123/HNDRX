@@ -1,38 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
     const logeado = localStorage.getItem('logeado');
 
-    // CORREGIDO: si NO está logeado, lo mandamos al login
+    // Si NO está logeado, redirigir al login
     if (logeado !== 'true') {
-        window.location.href = 'login.html';
+        window.location.href = 'Login.html';
         return;
     }
 
     const nombre = localStorage.getItem('nombre');
     const rol = localStorage.getItem('rol');
 
-    document.getElementById('nombreUsuario').textContent = nombre;
-
-    if (rol === 'asociado') {
-        document.getElementById('tituloAdministrador').classList.add('d-none');
-        document.getElementById('tarjetasAdministrador').classList.add('d-none');
-
-        document.getElementById('tituloAsociado').classList.remove('d-none');
-        document.getElementById('tarjetasAsociado').classList.remove('d-none');
-    } else {
-        document.getElementById('tituloAdministrador').classList.remove('d-none');
-        document.getElementById('tarjetasAdministrador').classList.remove('d-none');
-
-        document.getElementById('tituloAsociado').classList.add('d-none');
-        document.getElementById('tarjetasAsociado').classList.add('d-none');
+    const nombreUsuarioEl = document.getElementById('nombreUsuario');
+    if (nombreUsuarioEl) {
+        nombreUsuarioEl.textContent = nombre || 'Usuario';
     }
 
-    document.getElementById('btnSalir').addEventListener('click', () => {
-        localStorage.clear();
-        window.location.href = 'login.html';
-    });
+    const badgeRolEl = document.getElementById('badgeRol');
+    if (badgeRolEl) {
+        if (rol === 'admin') {
+            badgeRolEl.textContent = 'Administrador';
+            badgeRolEl.className = 'badge bg-warning text-dark me-2';
+        } else {
+            badgeRolEl.textContent = 'Asociado';
+            badgeRolEl.className = 'badge bg-info text-dark me-2';
+        }
+    }
+
+    const seccionAdmin = document.getElementById('seccionAdministrador');
+    const seccionAsociado = document.getElementById('seccionAsociado');
+
+    if (rol === 'asociado') {
+        if (seccionAdmin) seccionAdmin.classList.add('d-none');
+        if (seccionAsociado) seccionAsociado.classList.remove('d-none');
+    } else {
+        if (seccionAdmin) seccionAdmin.classList.remove('d-none');
+        if (seccionAsociado) seccionAsociado.classList.add('d-none');
+    }
+
+    const btnSalir = document.getElementById('btnSalir');
+    if (btnSalir) {
+        btnSalir.addEventListener('click', cerrarSesion);
+    }
 });
                 
 function cerrarSesion() {
     localStorage.clear();
-    window.location.href = '../VISTA/Login.html';
+    window.location.href = 'Login.html';
 }

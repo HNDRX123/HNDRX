@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLUB ACERÍAS - Registro de Asociados</title>
+    <!-- Bootstrap 5.3.0 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Bootstrap Icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        .header-mr { 
+            background-color: #1177a0; 
+            color: #fff; 
+            padding: 1rem 1.5rem; 
+            border-bottom: 4px solid #0b2286; 
+        }
+        .form-card { 
+            border-top: 4px solid #1177a0; 
+            transition: box-shadow .15s; 
+        }
+        .form-card:hover { 
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
+        }
+        .icono-seccion { 
+            font-size: 2.75rem; 
+            color: #1177a0; 
+        }
+        .btn-primary-custom {
+            background-color: #1177a0;
+            border-color: #1177a0;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .btn-primary-custom:hover {
+            background-color: #0e5e7e;
+            border-color: #0b4e69;
+            color: #ffffff;
+        }
+        .section-title {
+            color: #1177a0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.4rem;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Encabezado Institucional -->
+    <header class="header-mr shadow-sm d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-buildings-fill fs-3"></i>
+            <h3 class="m-0 fw-bold">CLUB ACERÍAS</h3>
+        </div>
+        <div>
+            <a href="dashboard.html" class="btn btn-outline-light btn-sm shadow-sm">
+                <i class="bi bi-arrow-left-circle me-1"></i> Volver al Panel
+            </a>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal -->
+    <main class="container py-4 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-9">
+
+                <!-- Tarjeta del Formulario -->
+                <div class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3">
+                    
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <i class="bi bi-people-fill icono-seccion"></i>
+                        <div>
+                            <h3 class="fw-bold text-dark m-0">Registro de Asociados</h3>
+                            <p class="text-muted small m-0">Vinculación de nuevos socios, gestión de datos personales y asignación de membresías</p>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje de confirmación -->
+                    <div id="alertaExito" class="alert alert-success alert-dismissible fade d-none" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <strong>¡Asociado registrado con éxito!</strong> El nuevo miembro ha quedado registrado en el club.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+
+                    <form id="formRegistroAsociados" action="" method="post" novalidate>
+                        
+                        <!-- Bloque 1: Identificación y Datos Personales -->
+                        <h5 class="section-title">
+                            <i class="bi bi-person-badge me-2"></i>1. Identificación y Datos Personales
+                        </h5>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="tipoDocumento" class="form-label fw-semibold">Tipo de Documento <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-card-text text-muted"></i></span>
+                                    <select class="form-select" id="tipoDocumento" name="tipoDocumento" required>
+                                        <option value="CC" selected>Cédula de Ciudadanía (C.C.)</option>
+                                        <option value="CE">Cédula de Extranjería (C.E.)</option>
+                                        <option value="PAS">Pasaporte</option>
+                                        <option value="TI">Tarjeta de Identidad</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="documento" class="form-label fw-semibold">Número de Documento <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-hash text-muted"></i></span>
+                                    <input type="text" class="form-control" id="documento" name="documento" inputmode="numeric" pattern="[0-9]+" required placeholder="Ej: 1057000111">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="fechaNacimiento" class="form-label fw-semibold">Fecha de Nacimiento <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-calendar-heart text-muted"></i></span>
+                                    <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="nombre" class="form-label fw-semibold">Nombres Completos <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person text-muted"></i></span>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required placeholder="Ingrese sus nombres">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="apellido" class="form-label fw-semibold">Apellidos Completos <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person text-muted"></i></span>
+                                    <input type="text" class="form-control" id="apellido" name="apellido" required placeholder="Ingrese sus apellidos">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold d-block">Género <span class="text-danger">*</span></label>
+                                <div class="d-flex gap-4 pt-1">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="genero" id="generoM" value="Masculino" required checked>
+                                        <label class="form-check-label" for="generoM">Masculino</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="genero" id="generoF" value="Femenino">
+                                        <label class="form-check-label" for="generoF">Femenino</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="genero" id="generoO" value="Otros">
+                                        <label class="form-check-label" for="generoO">Otros</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="estadoCivil" class="form-label fw-semibold">Estado Civil</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-heart text-muted"></i></span>
+                                    <select class="form-select" id="estadoCivil" name="estadoCivil">
+                                        <option value="Soltero(a)" selected>Soltero(a)</option>
+                                        <option value="Casado(a)">Casado(a)</option>
+                                        <option value="Unión Libre">Unión Libre</option>
+                                        <option value="Divorciado(a)">Divorciado(a)</option>
+                                        <option value="Viudo(a)">Viudo(a)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 2: Contacto y Residencia -->
+                        <h5 class="section-title">
+                            <i class="bi bi-geo-alt-fill me-2"></i>2. Contacto y Residencia
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-8">
+                                <label for="direccionResidencia" class="form-label fw-semibold">Dirección de Residencia <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-house-door-fill text-muted"></i></span>
+                                    <input type="text" class="form-control" id="direccionResidencia" name="direccionResidencia" required placeholder="Ej: Carrera 11 # 15-30, Barrio El Prado">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="ciudad" class="form-label fw-semibold">Ciudad <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-buildings text-muted"></i></span>
+                                    <select class="form-select" id="ciudad" name="ciudad" required>
+                                        <option value="" disabled selected>Seleccione ciudad</option>
+                                        <option value="sogamoso">Sogamoso</option>
+                                        <option value="duitama">Duitama</option>
+                                        <option value="tunja">Tunja</option>
+                                        <option value="paipa">Paipa</option>
+                                        <option value="nobsa">Nobsa</option>
+                                        <option value="tibasosa">Tibasosa</option>
+                                        <option value="otra">Otra Ciudad</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="telefono" class="form-label fw-semibold">Teléfono Celular <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-phone-fill text-muted"></i></span>
+                                    <input type="tel" class="form-control" id="telefono" name="telefono" required placeholder="Ej: 3101234567">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="email" class="form-label fw-semibold">Correo Electrónico <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-envelope-fill text-muted"></i></span>
+                                    <input type="email" class="form-control" id="email" name="email" required placeholder="nombre@correo.com">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 3: Datos de Membresía e Institucionales -->
+                        <h5 class="section-title">
+                            <i class="bi bi-award-fill me-2"></i>3. Datos de Membresía y Vinculación
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="tipoMembresia" class="form-label fw-semibold">Tipo de Membresía <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-card-checklist text-muted"></i></span>
+                                    <select class="form-select" id="tipoMembresia" name="tipoMembresia" required>
+                                        <option value="" disabled selected>Seleccione membresía</option>
+                                        <option value="Estándar" selected>Estándar</option>
+                                        <option value="Familiar">Familiar</option>
+                                        <option value="Premium">Premium / Ejecutiva</option>
+                                        <option value="Honorario">Honorario / Pensionado Acerías</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="fechaAfiliacion" class="form-label fw-semibold">Fecha de Afiliación <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-calendar-plus text-muted"></i></span>
+                                    <input type="date" class="form-control" id="fechaAfiliacion" name="fechaAfiliacion" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="estadoAsociado" class="form-label fw-semibold">Estado del Asociado <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-check-circle text-muted"></i></span>
+                                    <select class="form-select" id="estadoAsociado" name="estadoAsociado" required>
+                                        <option value="Activo" selected>Activo</option>
+                                        <option value="En Proceso">En Proceso de Aprobación</option>
+                                        <option value="Pendiente Documentación">Pendiente Documentación</option>
+                                        <option value="Inactivo">Inactivo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="empresa" class="form-label fw-semibold">Empresa / Entidad Vinculada</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-building text-muted"></i></span>
+                                    <input type="text" class="form-control" id="empresa" name="empresa" value="Acerías Paz del Río" placeholder="Nombre de la empresa">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="ocupacion" class="form-label fw-semibold">Ocupación / Cargo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person-workspace text-muted"></i></span>
+                                    <input type="text" class="form-control" id="ocupacion" name="ocupacion" placeholder="Ej: Operario de Producción / Ingeniero / Administrativo">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-flex flex-wrap gap-2 justify-content-end pt-3 border-top">
+                            <button type="reset" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-eraser me-1"></i> Limpiar Campos
+                            </button>
+                            <button type="submit" class="btn btn-primary-custom px-4 shadow-sm">
+                                <i class="bi bi-person-check-fill me-1"></i> Registrar Asociado
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Pie de página -->
+                <div class="text-center mt-3 text-muted small">
+                    &copy; 2026 Club Acerías - Sistema de Registro y Gestión de Asociados
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('fechaAfiliacion').value = hoy;
+        });
+
+        document.getElementById('formRegistroAsociados').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!this.checkValidity()) {
+                e.stopPropagation();
+                this.classList.add('was-validated');
+                return;
+            }
+            
+            const alerta = document.getElementById('alertaExito');
+            alerta.classList.remove('d-none');
+            alerta.classList.add('show');
+            
+            alerta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => {
+                this.reset();
+                this.classList.remove('was-validated');
+                const hoy = new Date().toISOString().split('T')[0];
+                document.getElementById('fechaAfiliacion').value = hoy;
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

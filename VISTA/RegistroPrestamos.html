@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLUB ACERÍAS - Registro de Préstamos</title>
+    <!-- Bootstrap 5.3.0 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Bootstrap Icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        .header-mr { 
+            background-color: #1177a0; 
+            color: #fff; 
+            padding: 1rem 1.5rem; 
+            border-bottom: 4px solid #0b2286; 
+        }
+        .form-card { 
+            border-top: 4px solid #1177a0; 
+            transition: box-shadow .15s; 
+        }
+        .form-card:hover { 
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
+        }
+        .icono-seccion { 
+            font-size: 2.75rem; 
+            color: #1177a0; 
+        }
+        .btn-primary-custom {
+            background-color: #1177a0;
+            border-color: #1177a0;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .btn-primary-custom:hover {
+            background-color: #0e5e7e;
+            border-color: #0b4e69;
+            color: #ffffff;
+        }
+        .section-title {
+            color: #1177a0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.4rem;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .simulador-box {
+            background-color: #f1f7fa;
+            border-left: 4px solid #1177a0;
+            border-radius: 6px;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Encabezado Institucional -->
+    <header class="header-mr shadow-sm d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-buildings-fill fs-3"></i>
+            <h3 class="m-0 fw-bold">CLUB ACERÍAS</h3>
+        </div>
+        <div>
+            <a href="dashboard.html" class="btn btn-outline-light btn-sm shadow-sm">
+                <i class="bi bi-arrow-left-circle me-1"></i> Volver al Panel
+            </a>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal -->
+    <main class="container py-4 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-9">
+
+                <!-- Tarjeta del Formulario -->
+                <div class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3">
+                    
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <i class="bi bi-cash-stack icono-seccion"></i>
+                        <div>
+                            <h3 class="fw-bold text-dark m-0">Registro de Préstamos</h3>
+                            <p class="text-muted small m-0">Administra las solicitudes de créditos, plazos, tasas y fiadores de los asociados</p>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje de confirmación -->
+                    <div id="alertaExito" class="alert alert-success alert-dismissible fade d-none" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <strong>¡Préstamo registrado correctamente!</strong> La solicitud ha sido creada y asignada al sistema de créditos.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+
+                    <form id="formRegistroPrestamos" action="" method="post" novalidate>
+                        
+                        <!-- Bloque 1: Solicitud y Datos del Asociado -->
+                        <h5 class="section-title">
+                            <i class="bi bi-person-lines-fill me-2"></i>1. Datos del Solicitante y Solicitud
+                        </h5>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="codigoPrestamo" class="form-label fw-semibold">Código de Solicitud <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-hash text-muted"></i></span>
+                                    <input type="text" class="form-control" id="codigoPrestamo" name="codigoPrestamo" required placeholder="Ej: PREST-2026-009">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="documentoAsociado" class="form-label fw-semibold">Documento Asociado <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-card-text text-muted"></i></span>
+                                    <input type="text" class="form-control" id="documentoAsociado" name="documentoAsociado" inputmode="numeric" pattern="[0-9]+" required placeholder="Ej: 1057000111">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="nombreAsociado" class="form-label fw-semibold">Nombre Completo <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person-fill text-muted"></i></span>
+                                    <input type="text" class="form-control" id="nombreAsociado" name="nombreAsociado" required placeholder="Nombre del solicitante">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 2: Condiciones Financieras del Préstamo -->
+                        <h5 class="section-title">
+                            <i class="bi bi-calculator-fill me-2"></i>2. Condiciones Financieras del Préstamo
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="lineaCredito" class="form-label fw-semibold">Línea de Crédito <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-briefcase-fill text-muted"></i></span>
+                                    <select class="form-select" id="lineaCredito" name="lineaCredito" required>
+                                        <option value="" disabled selected>Seleccione modalidad</option>
+                                        <option value="Libre Inversión">Libre Inversión</option>
+                                        <option value="Calamidad Doméstica">Calamidad Doméstica</option>
+                                        <option value="Educativo">Educativo</option>
+                                        <option value="Salud y Emergencia">Salud y Emergencia Médica</option>
+                                        <option value="Vivienda y Mejoras">Vivienda y Mejoras del Hogar</option>
+                                        <option value="Compra de Cartera">Compra de Cartera</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="montoSolicitado" class="form-label fw-semibold">Monto Solicitado ($ COP) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-currency-dollar text-muted"></i></span>
+                                    <input type="number" class="form-control" id="montoSolicitado" name="montoSolicitado" min="50000" step="10000" required placeholder="Ej: 2000000">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="plazoMeses" class="form-label fw-semibold">Plazo (Meses) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-calendar3 text-muted"></i></span>
+                                    <select class="form-select" id="plazoMeses" name="plazoMeses" required>
+                                        <option value="6">6 meses</option>
+                                        <option value="12" selected>12 meses (1 año)</option>
+                                        <option value="18">18 meses</option>
+                                        <option value="24">24 meses (2 años)</option>
+                                        <option value="36">36 meses (3 años)</option>
+                                        <option value="48">48 meses (4 años)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="tasaInteres" class="form-label fw-semibold">Tasa Mensual (%) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-percent text-muted"></i></span>
+                                    <input type="number" class="form-control" id="tasaInteres" name="tasaInteres" min="0" max="10" step="0.05" value="1.2" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="frecuenciaPago" class="form-label fw-semibold">Frecuencia de Abono <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-repeat text-muted"></i></span>
+                                    <select class="form-select" id="frecuenciaPago" name="frecuenciaPago" required>
+                                        <option value="Mensual" selected>Mensual</option>
+                                        <option value="Quincenal">Quincenal (Deducción quincena)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Simulador de Cuota Estimada -->
+                            <div class="col-12">
+                                <div class="simulador-box d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <div>
+                                        <span class="fw-bold text-dark"><i class="bi bi-pie-chart-fill me-1 text-primary"></i> Cuota Estimada Aproximada:</span>
+                                        <span class="text-muted small d-block">Calculada sobre interés simple referencial</span>
+                                    </div>
+                                    <div class="fs-4 fw-bold text-success" id="valorCuotaEstimada">
+                                        $ 0 COP
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="destinoPrestamo" class="form-label fw-semibold">Destino / Justificación del Préstamo <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="destinoPrestamo" name="destinoPrestamo" rows="2" required placeholder="Explique brevemente en qué se invertirá el dinero solicitado..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 3: Datos del Fiador / Codeudor -->
+                        <h5 class="section-title">
+                            <i class="bi bi-people-fill me-2"></i>3. Datos del Codeudor / Fiador
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="documentoCodeudor" class="form-label fw-semibold">Documento Codeudor</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-card-heading text-muted"></i></span>
+                                    <input type="text" class="form-control" id="documentoCodeudor" name="documentoCodeudor" inputmode="numeric" pattern="[0-9]*" placeholder="Ej: 1057000222">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="nombreCodeudor" class="form-label fw-semibold">Nombre Completo Codeudor</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person-bounding-box text-muted"></i></span>
+                                    <input type="text" class="form-control" id="nombreCodeudor" name="nombreCodeudor" placeholder="Nombre completo">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="telefonoCodeudor" class="form-label fw-semibold">Teléfono del Codeudor</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-telephone text-muted"></i></span>
+                                    <input type="tel" class="form-control" id="telefonoCodeudor" name="telefonoCodeudor" placeholder="Ej: 3110001122">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 4: Fechas y Estado -->
+                        <h5 class="section-title">
+                            <i class="bi bi-calendar-check-fill me-2"></i>4. Fechas, Desembolso y Estado
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="fechaSolicitud" class="form-label fw-semibold">Fecha de Solicitud <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-calendar-event text-muted"></i></span>
+                                    <input type="date" class="form-control" id="fechaSolicitud" name="fechaSolicitud" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="formaDesembolso" class="form-label fw-semibold">Método de Desembolso <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-credit-card text-muted"></i></span>
+                                    <select class="form-select" id="formaDesembolso" name="formaDesembolso" required>
+                                        <option value="Transferencia Bancaria" selected>Transferencia Bancaria</option>
+                                        <option value="Cheque">Cheque de Gerencia</option>
+                                        <option value="Efectivo en Caja">Efectivo en Caja</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="estadoPrestamo" class="form-label fw-semibold">Estado de la Solicitud <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-flag-fill text-muted"></i></span>
+                                    <select class="form-select" id="estadoPrestamo" name="estadoPrestamo" required>
+                                        <option value="Solicitado" selected>Solicitado</option>
+                                        <option value="En Estudio">En Estudio / Comité</option>
+                                        <option value="Aprobado">Aprobado</option>
+                                        <option value="Desembolsado">Desembolsado</option>
+                                        <option value="Rechazado">Rechazado</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="observacionesPrestamo" class="form-label fw-semibold">Observaciones / Condiciones del Comité</label>
+                                <textarea class="form-control" id="observacionesPrestamo" name="observacionesPrestamo" rows="2" placeholder="Acuerdos de deducción por nómina o requerimientos previos al desembolso..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-flex flex-wrap gap-2 justify-content-end pt-3 border-top">
+                            <button type="reset" class="btn btn-outline-secondary px-4" id="btnReset">
+                                <i class="bi bi-eraser me-1"></i> Limpiar Campos
+                            </button>
+                            <button type="submit" class="btn btn-primary-custom px-4 shadow-sm">
+                                <i class="bi bi-file-earmark-check-fill me-1"></i> Registrar Préstamo
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Pie de página -->
+                <div class="text-center mt-3 text-muted small">
+                    &copy; 2026 Club Acerías - Sistema de Préstamos y Créditos para Asociados
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Calcular cuota estimada
+        function calcularCuota() {
+            const monto = parseFloat(document.getElementById('montoSolicitado').value) || 0;
+            const meses = parseInt(document.getElementById('plazoMeses').value) || 12;
+            const tasaMensual = (parseFloat(document.getElementById('tasaInteres').value) || 0) / 100;
+            
+            if (monto > 0 && meses > 0) {
+                // Cuota fija con fórmula de anualidad / amortización
+                let cuota = 0;
+                if (tasaMensual > 0) {
+                    cuota = (monto * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -meses));
+                } else {
+                    cuota = monto / meses;
+                }
+                document.getElementById('valorCuotaEstimada').textContent = 
+                    '$ ' + Math.round(cuota).toLocaleString('es-CO') + ' COP / mes';
+            } else {
+                document.getElementById('valorCuotaEstimada').textContent = '$ 0 COP';
+            }
+        }
+
+        document.getElementById('montoSolicitado').addEventListener('input', calcularCuota);
+        document.getElementById('plazoMeses').addEventListener('change', calcularCuota);
+        document.getElementById('tasaInteres').addEventListener('input', calcularCuota);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('fechaSolicitud').value = hoy;
+            calcularCuota();
+        });
+
+        document.getElementById('btnReset').addEventListener('click', () => {
+            setTimeout(calcularCuota, 100);
+        });
+
+        document.getElementById('formRegistroPrestamos').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!this.checkValidity()) {
+                e.stopPropagation();
+                this.classList.add('was-validated');
+                return;
+            }
+            
+            const alerta = document.getElementById('alertaExito');
+            alerta.classList.remove('d-none');
+            alerta.classList.add('show');
+            
+            alerta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => {
+                this.reset();
+                this.classList.remove('was-validated');
+                const hoy = new Date().toISOString().split('T')[0];
+                document.getElementById('fechaSolicitud').value = hoy;
+                calcularCuota();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

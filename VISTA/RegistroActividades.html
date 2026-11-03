@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLUB ACERÍAS - Registro de Actividades</title>
+    <!-- Bootstrap 5.3.0 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Bootstrap Icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        .header-mr { 
+            background-color: #1177a0; 
+            color: #fff; 
+            padding: 1rem 1.5rem; 
+            border-bottom: 4px solid #0b2286; 
+        }
+        .form-card { 
+            border-top: 4px solid #1177a0; 
+            transition: box-shadow .15s; 
+        }
+        .form-card:hover { 
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
+        }
+        .icono-seccion { 
+            font-size: 2.75rem; 
+            color: #1177a0; 
+        }
+        .btn-primary-custom {
+            background-color: #1177a0;
+            border-color: #1177a0;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .btn-primary-custom:hover {
+            background-color: #0e5e7e;
+            border-color: #0b4e69;
+            color: #ffffff;
+        }
+        .section-title {
+            color: #1177a0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.4rem;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Encabezado Institucional -->
+    <header class="header-mr shadow-sm d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-buildings-fill fs-3"></i>
+            <h3 class="m-0 fw-bold">CLUB ACERÍAS</h3>
+        </div>
+        <div>
+            <a href="dashboard.html" class="btn btn-outline-light btn-sm shadow-sm">
+                <i class="bi bi-arrow-left-circle me-1"></i> Volver al Panel
+            </a>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal -->
+    <main class="container py-4 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-9">
+
+                <!-- Tarjeta del Formulario -->
+                <div class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3">
+                    
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <i class="bi bi-calendar-event-fill icono-seccion"></i>
+                        <div>
+                            <h3 class="fw-bold text-dark m-0">Registro de Actividades</h3>
+                            <p class="text-muted small m-0">Planifica, crea y programa los eventos sociales, deportivos y culturales del club</p>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje de confirmación -->
+                    <div id="alertaExito" class="alert alert-success alert-dismissible fade d-none" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <strong>¡Actividad registrada con éxito!</strong> Los datos han sido procesados correctamente.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+
+                    <form id="formRegistroActividades" action="" method="post" novalidate>
+                        
+                        <!-- Bloque 1: Información General del Evento -->
+                        <h5 class="section-title">
+                            <i class="bi bi-info-circle-fill me-2"></i>1. Datos Generales de la Actividad
+                        </h5>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-8">
+                                <label for="nombreActividad" class="form-label fw-semibold">Nombre de la Actividad <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-bookmark-star-fill text-muted"></i></span>
+                                    <input type="text" class="form-control" id="nombreActividad" name="nombreActividad" required placeholder="Ej: Torneo de Fútbol Interempresas 2026">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="categoriaActividad" class="form-label fw-semibold">Categoría / Tipo <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-tag-fill text-muted"></i></span>
+                                    <select class="form-select" id="categoriaActividad" name="categoriaActividad" required>
+                                        <option value="" disabled selected>Seleccione una categoría</option>
+                                        <option value="deportiva">Deportiva</option>
+                                        <option value="cultural">Cultural y Artística</option>
+                                        <option value="recreativa">Recreativa y Familiar</option>
+                                        <option value="capacitacion">Capacitación / Taller</option>
+                                        <option value="asamblea">Asamblea General / Reunión</option>
+                                        <option value="celebracion">Fiesta / Celebración Especial</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="descripcionActividad" class="form-label fw-semibold">Descripción del Evento <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="descripcionActividad" name="descripcionActividad" rows="3" required placeholder="Describa el objetivo del evento, público objetivo y agenda resumida..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 2: Programación, Fecha y Lugar -->
+                        <h5 class="section-title">
+                            <i class="bi bi-clock-history me-2"></i>2. Horario, Ubicación y Logística
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="fechaActividad" class="form-label fw-semibold">Fecha de Realización <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-calendar-check-fill text-muted"></i></span>
+                                    <input type="date" class="form-control" id="fechaActividad" name="fechaActividad" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="horaInicio" class="form-label fw-semibold">Hora de Inicio <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-clock-fill text-muted"></i></span>
+                                    <input type="time" class="form-control" id="horaInicio" name="horaInicio" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="horaFin" class="form-label fw-semibold">Hora de Finalización <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-clock-history text-muted"></i></span>
+                                    <input type="time" class="form-control" id="horaFin" name="horaFin" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="lugarActividad" class="form-label fw-semibold">Lugar / Sede <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-geo-alt-fill text-muted"></i></span>
+                                    <select class="form-select" id="lugarActividad" name="lugarActividad" required>
+                                        <option value="" disabled selected>Seleccione la sede o espacio</option>
+                                        <option value="Sede Campestre Sogamoso">Sede Campestre Sogamoso</option>
+                                        <option value="Salón Social Principal">Salón Social Principal</option>
+                                        <option value="Cancha Múltiple y Polideportivo">Cancha Múltiple y Polideportivo</option>
+                                        <option value="Auditorio Central Acerías">Auditorio Central Acerías</option>
+                                        <option value="Piscina y Zona Húmeda">Piscina y Zona Húmeda</option>
+                                        <option value="Sede Duitama">Sede Duitama</option>
+                                        <option value="Espacio Externo">Espacio Externo / Salida Ecológica</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="direccionDetalle" class="form-label fw-semibold">Ubicación Detallada / Punto de Encuentro</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-pin-map-fill text-muted"></i></span>
+                                    <input type="text" class="form-control" id="direccionDetalle" name="direccionDetalle" placeholder="Ej: Portería 2, Zona Verde Norte">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloque 3: Capacidad, Costos y Organización -->
+                        <h5 class="section-title">
+                            <i class="bi bi-people-fill me-2"></i>3. Capacidad, Costos y Responsables
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="cupoMaximo" class="form-label fw-semibold">Cupo Máximo (Personas) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person-fill-check text-muted"></i></span>
+                                    <input type="number" class="form-control" id="cupoMaximo" name="cupoMaximo" min="1" max="5000" required placeholder="Ej: 50">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="costoInscripcion" class="form-label fw-semibold">Costo Inscripción ($ COP)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-currency-dollar text-muted"></i></span>
+                                    <input type="number" class="form-control" id="costoInscripcion" name="costoInscripcion" min="0" step="500" value="0" placeholder="0 para evento gratuito">
+                                </div>
+                                <div class="form-text">Indique 0 si el evento es gratuito para asociados.</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="estadoActividad" class="form-label fw-semibold">Estado de la Actividad <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-toggle-on text-muted"></i></span>
+                                    <select class="form-select" id="estadoActividad" name="estadoActividad" required>
+                                        <option value="Programada" selected>Programada</option>
+                                        <option value="Confirmada">Confirmada</option>
+                                        <option value="Inscripciones Abiertas">Inscripciones Abiertas</option>
+                                        <option value="En Curso">En Curso</option>
+                                        <option value="Finalizada">Finalizada</option>
+                                        <option value="Cancelada">Cancelada</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="responsable" class="form-label fw-semibold">Responsable / Organizador <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person-badge-fill text-muted"></i></span>
+                                    <input type="text" class="form-control" id="responsable" name="responsable" required placeholder="Nombre del coordinador o comité">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="contactoResponsable" class="form-label fw-semibold">Teléfono o Correo de Contacto</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-telephone-fill text-muted"></i></span>
+                                    <input type="text" class="form-control" id="contactoResponsable" name="contactoResponsable" placeholder="Ej: 3101234567 o eventos@clubacerias.com">
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="requisitos" class="form-label fw-semibold">Requisitos o Recomendaciones para los Asistentes</label>
+                                <textarea class="form-control" id="requisitos" name="requisitos" rows="2" placeholder="Ej: Traer ropa deportiva, hidratación, documento de identidad, etc."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-flex flex-wrap gap-2 justify-content-end pt-3 border-top">
+                            <button type="reset" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-eraser me-1"></i> Limpiar Campos
+                            </button>
+                            <button type="submit" class="btn btn-primary-custom px-4 shadow-sm">
+                                <i class="bi bi-save2-fill me-1"></i> Registrar Actividad
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Pie de página -->
+                <div class="text-center mt-3 text-muted small">
+                    &copy; 2026 Club Acerías - Sistema de Gestión de Actividades y Eventos
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.getElementById('formRegistroActividades').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!this.checkValidity()) {
+                e.stopPropagation();
+                this.classList.add('was-validated');
+                return;
+            }
+            
+            // Simulación de guardado exitoso
+            const alerta = document.getElementById('alertaExito');
+            alerta.classList.remove('d-none');
+            alerta.classList.add('show');
+            
+            // Desplazar suavemente a la alerta
+            alerta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Limpiar formulario tras guardar
+            setTimeout(() => {
+                this.reset();
+                this.classList.remove('was-validated');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
