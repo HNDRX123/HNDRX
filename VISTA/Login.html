@@ -3,31 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - CLUB ADSO</title>
-    <link rel="stylesheet" href="../ACCES/css/Style.css">
+    <title>CLUB ACERÍAS - Iniciar Sesión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        .header-mr { 
+            background-color: #1177a0; 
+            color: #fff; 
+            padding: 1rem 1.5rem; 
+            border-bottom: 4px solid #0b2286; 
+        }
+        .login-card { 
+            border-top: 4px solid #1177a0; 
+            transition: box-shadow .15s; 
+        }
+        .login-card:hover { 
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
+        }
+        .icono-login { 
+            font-size: 3rem; 
+            color: #1177a0; 
+        }
+    </style>
 </head>
-<body>
-    <div class="contenedor contenedor-login">
-        <h2>Iniciar sesión</h2>
+<body class="bg-light d-flex flex-column min-vh-100">
 
-        <form id="formLogin" action="" method="post">
-
-            <div class="grupo-input">
-                <label for="usuario">Usuario</label>
-                <input type="text" id="usuario" name="usuario" required placeholder="Ingrese su usuario">
-            </div>
-
-            <div class="grupo-input">
-                <label for="contrasena">Contraseña</label>
-                <input type="password" id="contrasena" name="contrasena" required placeholder="Ingrese su contraseña">
-            </div>
-
-            <div class="grupo-botones">
-                <button type="submit" class="btn-guardar">Ingresar</button>
-                <button type="reset" class="btn-limpiar">Limpiar</button>
-            </div>
-
-        </form>
+    <div class="header-mr shadow-sm">
+        <h3 class="m-0"><i class="bi bi-buildings-fill me-2"></i>CLUB ACERÍAS</h3>
     </div>
+
+    <div class="container d-flex justify-content-center align-items-center flex-grow-1 py-5">
+        <div class="col-md-5 col-lg-4">
+            
+            <div class="card login-card shadow-sm p-4 bg-white rounded-3">
+                <div class="text-center mb-4">
+                    <i class="bi bi-person-circle icono-login"></i>
+                    <h4 class="fw-bold text-primary mt-2">Iniciar Sesión</h4>
+                    <p class="text-muted small">Ingrese sus credenciales para acceder</p>
+                </div>
+
+                <form id="formLogin" action="" method="post">
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-person-fill"></i></span>
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="Ingrese su email">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="contrasena" class="form-label fw-semibold">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-lock-fill"></i></span>
+                            <input type="password" class="form-control" id="contrasena" name="contrasena" required placeholder="Ingrese su contraseña">
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-eraser me-1"></i>Limpiar campos
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+            
+            <div class="text-center mt-3 text-muted small">
+                &copy; 2026 Club Acerías - Todos los derechos reservados
+            </div>
+
+        </div>
+    </div>
+
 </body>
+
+<script src="../CONTROLADORES/login.js"></script>
 </html>
