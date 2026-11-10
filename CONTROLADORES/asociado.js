@@ -9,6 +9,15 @@ if (formulario) {
 
         const asociado = Object.fromEntries(new FormData(formulario).entries());
 
+        // Validar que la contraseña tenga mínimo 8 caracteres
+        if (asociado.password && asociado.password.length < 8) {
+            if (mensajeEl) {
+                mensajeEl.textContent = "La contraseña debe tener al menos 8 caracteres.";
+                mensajeEl.style.color = "#ffcccc";
+            }
+            return;
+        }
+
         // Validar que las contraseñas coincidan
         if (asociado.password && asociado.confirmarPassword && asociado.password !== asociado.confirmarPassword) {
             if (mensajeEl) {

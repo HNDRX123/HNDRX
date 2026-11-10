@@ -43,6 +43,12 @@ try {
         }
     }
 
+    // Validar longitud mínima de la contraseña
+    if (strlen((string)$datos['password']) < 8) {
+        http_response_code(400);
+        throw new Exception("La contraseña debe tener al menos 8 caracteres.");
+    }
+
     // Validar coincidencia de contraseña si viene el campo de confirmación
     if (isset($datos['confirmarPassword']) && $datos['password'] !== $datos['confirmarPassword']) {
         http_response_code(400);
