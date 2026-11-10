@@ -9,6 +9,15 @@ if (formulario) {
 
         const asociado = Object.fromEntries(new FormData(formulario).entries());
 
+        // Validar que las contraseñas coincidan
+        if (asociado.password && asociado.confirmarPassword && asociado.password !== asociado.confirmarPassword) {
+            if (mensajeEl) {
+                mensajeEl.textContent = "Las contraseñas no coinciden.";
+                mensajeEl.style.color = "#ffcccc";
+            }
+            return;
+        }
+
         if (botonGuardar) botonGuardar.disabled = true;
         if (mensajeEl) {
             mensajeEl.textContent = "Guardando...";

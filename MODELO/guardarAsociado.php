@@ -35,12 +35,18 @@ try {
         $datos['genero'] = 'Otro';
     }
 
-    $camposRequeridos = ["documento", "nombres", "apellidos", "fechaNacimiento", "genero", "direccionResidencia", "ciudad", "telefono", "email"];
+    $camposRequeridos = ["documento", "nombres", "apellidos", "fechaNacimiento", "genero", "direccionResidencia", "ciudad", "telefono", "email", "password"];
     foreach ($camposRequeridos as $campo) {
         if (!isset($datos[$campo]) || trim((string)$datos[$campo]) === '') {
             http_response_code(400);
             throw new Exception("Falta el campo obligatorio: " . $campo);
         }
+    }
+
+    // Validar coincidencia de contraseña si viene el campo de confirmación
+    if (isset($datos['confirmarPassword']) && $datos['password'] !== $datos['confirmarPassword']) {
+        http_response_code(400);
+        throw new Exception("Las contraseñas no coinciden.");
     }
 
     if (!filter_var($datos['email'], FILTER_VALIDATE_EMAIL)) {
