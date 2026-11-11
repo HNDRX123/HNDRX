@@ -335,8 +335,13 @@
         document.getElementById('montoSolicitado').addEventListener('input', calcularCuota);
         document.getElementById('plazoMeses').addEventListener('change', calcularCuota);
         document.getElementById('tasaInteres').addEventListener('input', calcularCuota);
+        document.getElementById('frecuenciaPago').addEventListener('change', calcularCuota);
 
         document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('logeado') !== 'true') {
+                window.location.href = 'Login.html';
+                return;
+            }
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fechaSolicitud').value = hoy;
             calcularCuota();

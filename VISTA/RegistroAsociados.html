@@ -86,6 +86,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                     </div>
 
+                    <!-- Mensaje de error -->
+                    <div id="alertaError" class="alert alert-danger alert-dismissible fade d-none" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <span id="mensajeErrorTexto">Ocurrió un error al registrar el asociado.</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+
                     <form id="formRegistroAsociados" action="" method="post" novalidate>
                         
                         <!-- Bloque 1: Identificación y Datos Personales -->
@@ -305,11 +312,15 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('logeado') !== 'true') {
+                window.location.href = 'Login.html';
+                return;
+            }
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fechaAfiliacion').value = hoy;
         });
 
-        document.getElementById('formRegistroAsociados').addEventListener('submit', function(e) {
+        document.getElementById('formRegistroAsociados').addEventListener('submit', async function(e) {
             e.preventDefault();
             if (!this.checkValidity()) {
                 e.stopPropagation();
@@ -317,18 +328,64 @@
                 return;
             }
             
-            const alerta = document.getElementById('alertaExito');
-            alerta.classList.remove('d-none');
-            alerta.classList.add('show');
-            
-            alerta.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            setTimeout(() => {
-                this.reset();
-                this.classList.remove('was-validated');
-                const hoy = new Date().toISOString().split('T')[0];
-                document.getElementById('fechaAfiliacion').value = hoy;
-            }, 1000);
+            const alertaExito = document.getElementById('alertaExito');
+            const alertaError = document.getElementById('alertaError');
+            const mensajeErrorTexto = document.getElementById('mensajeErrorTexto');
+            const btnSubmit = this.querySelector('button[type="submit"]');
+
+            if (alertaExito) {
+                alertaExito.classList.add('d-none');
+                alertaExito.classList.remove('show');
+            }
+            if (alertaError) {
+                alertaError.classList.add('d-none');
+                alertaError.classList.remove('show');
+            }
+            if (btnSubmit) btnSubmit.disabled = true;
+
+            const datos = Object.fromEntries(new FormData(this).entries());
+
+            try {
+                const res = await fetch('../MODELO/guardarAsociado.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+                const resultado = await res.json();
+
+                if (res.ok && resultado.success) {
+                    if (alertaExito) {
+                        alertaExito.classList.remove('d-none');
+                        alertaExito.classList.add('show');
+                        alertaExito.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    this.reset();
+                    this.classList.remove('was-validated');
+                    const hoy = new Date().toISOString().split('T')[0];
+                    document.getElementById('fechaAfiliacion').value = hoy;
+                } else {
+                    if (alertaError && mensajeErrorTexto) {
+                        mensajeErrorTexto.textContent = resultado.mensaje || 'Error al guardar el asociado.';
+                        alertaError.classList.remove('d-none');
+                        alertaError.classList.add('show');
+                        alertaError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        alert(resultado.mensaje || 'Error al guardar el asociado.');
+                    }
+                }
+            } catch (err) {
+                console.error('Error al guardar asociado:', err);
+                if (alertaError && mensajeErrorTexto) {
+                    mensajeErrorTexto.textContent = 'Error de conexión con el servidor.';
+                    alertaError.classList.remove('d-none');
+                    alertaError.classList.add('show');
+                    alertaError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    alert('Error de conexión con el servidor.');
+                }
+            } finally {
+                if (btnSubmit) btnSubmit.disabled = false;
+            }
         });
     </script>
 </body>

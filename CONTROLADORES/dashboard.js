@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const nombre = localStorage.getItem('nombre');
-    const rol = localStorage.getItem('rol');
+    const rol = (localStorage.getItem('rol') || 'asociado').toLowerCase();
+    const email = localStorage.getItem('email');
+    const documento = localStorage.getItem('documento');
 
     const nombreUsuarioEl = document.getElementById('nombreUsuario');
     if (nombreUsuarioEl) {
@@ -35,6 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         if (seccionAdmin) seccionAdmin.classList.remove('d-none');
         if (seccionAsociado) seccionAsociado.classList.add('d-none');
+    }
+
+    const perfilDocEl = document.getElementById('perfilDoc');
+    if (perfilDocEl && documento) {
+        perfilDocEl.textContent = 'Documento: ' + documento;
+    }
+
+    const perfilEmailEl = document.getElementById('perfilEmail');
+    if (perfilEmailEl && email) {
+        perfilEmailEl.textContent = 'Correo: ' + email;
     }
 
     const btnSalir = document.getElementById('btnSalir');

@@ -1,24 +1,39 @@
-const usuarios = [
-    { email: 'admin@gmail.com', clave: '123', rol: 'admin', nombre: 'Juan Perez' },
-    { email: 'asociado@gmail.com', clave: '456', rol: 'asociado', nombre: 'Esteban Lesmes' }
-];
-
-document.getElementById('formLogin').addEventListener('submit', function (e) {
+const formulario = document.getElementById('loginForm');
+formulario.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const emailInput = document.getElementById('email').value.trim();
-    const claveInput = document.getElementById('contrasena').value;
+    const boton = formulario.querySelector('button[type="submit"]');
+    alert('Iniciando sesión...');
+    const mensaje = formulario.getElementById('mensajeLogin');
 
-    const usuarioEncontrado = usuarios.find(
-        u => u.email === emailInput && u.clave === claveInput
-    );
+    boton.disabled = true;
 
-    if (usuarioEncontrado) {
-        localStorage.setItem('logeado', 'true');
-        localStorage.setItem('rol', usuarioEncontrado.rol);
-        localStorage.setItem('nombre', usuarioEncontrado.nombre);
+    try {
+        const respuesta = await fetch(formulario.action, {
+            method: 'POST',
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(Object.fromEntries(new FormData(formulario).entries()))
+        });
+
+        const resultado = await respuesta.json();
+
+        if (!resultado.success) {
+            mensaje.txtContent = "NO fue posible iniciar sesión. Por favor, verifique sus credenciales.";
+            boton.disabled = false;
+            return;
+        }
+
+        localStorage.setItem('logueado', 'true');
+        localStorage.setItem('rol', resultado.rol);
+        localStorage.setItem('nombre', resultado.nombre || usuarioInput);
         window.location.href = 'dashboard.html';
-    } else {
-        alert('Usuario o contraseña incorrectos');
+
+    } catch(error) {
+        console.error("error al iniciar sesion", error);
+        mensaje.txtContent=
+        "Ocurrio un error al intentar iniciar sesion. Por favor, intente nuevamente.";
+
+    }finally {
+        boton.disabled = false;
     }
 });

@@ -132,23 +132,68 @@
     <div id="seccionAsociado" class="d-none">
         <h5 id="tituloAsociado" class="mb-4 fw-bold text-dark"><i class="bi bi-person-badge-fill me-2"></i>Panel del Asociado</h5>
         <div id="tarjetasAsociado" class="row g-4">
+            
+            <!-- 1. Mi perfil -->
             <div class="col-md-4">
-                <div class="card modulo-card asociado shadow-sm p-3">
-                    <i class="bi bi-person-vcard-fill icono-principal"></i>
-                    <h4 class="text-success mt-2">Mi perfil</h4>
-                    <strong>Datos Personales</strong>
-                    <p class="text-muted mt-2">Ver mis datos y el estado actual de mis préstamos.</p>
+                <div class="card modulo-card asociado shadow-sm p-3 d-flex flex-column justify-content-between">
+                    <div>
+                        <i class="bi bi-person-vcard-fill icono-principal"></i>
+                        <h4 class="text-success mt-2">Mi Perfil</h4>
+                        <strong>Datos Personales</strong>
+                        <p class="text-muted mt-2">Información de su membresía y estado como socio activo.</p>
+                        <div id="datosPerfilAsociado" class="mt-2 p-2 bg-light rounded border">
+                            <small class="text-muted d-block" id="perfilDoc">Documento: -</small>
+                            <small class="text-muted d-block" id="perfilEmail">Correo: -</small>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <!-- 2. Mis pagos -->
             <div class="col-md-4">
-                <div class="card modulo-card asociado shadow-sm p-3">
-                    <i class="bi bi-wallet2 icono-principal"></i>
-                    <h4 class="text-success mt-2">Mis pagos</h4>
-                    <strong>Control de Abonos</strong>
-                    <p class="text-muted mt-2">Ver mis abonos y el historial de pagos de mis préstamos.</p>
+                <div class="card modulo-card asociado shadow-sm p-3 d-flex flex-column justify-content-between">
+                    <div>
+                        <i class="bi bi-wallet2 icono-principal"></i>
+                        <h4 class="text-success mt-2">Mis Pagos</h4>
+                        <strong>Control de Abonos</strong>
+                        <p class="text-muted mt-2">Registra pagos de cuotas ordinarias o abonos a créditos.</p>
+                    </div>
+                    <a href="RegistroPago.html" class="btn btn-outline-success btn-sm mt-3 w-100">
+                        <i class="bi bi-receipt me-1"></i> Registrar Pago
+                    </a>
                 </div>
             </div>
+
+            <!-- 3. Solicitar Préstamo -->
+            <div class="col-md-4">
+                <div class="card modulo-card asociado shadow-sm p-3 d-flex flex-column justify-content-between">
+                    <div>
+                        <i class="bi bi-cash-stack icono-principal"></i>
+                        <h4 class="text-success mt-2">Préstamos</h4>
+                        <strong>Solicitud de Crédito</strong>
+                        <p class="text-muted mt-2">Simula y solicita préstamos de libre inversión o calamidad.</p>
+                    </div>
+                    <a href="RegistroPrestamos.html" class="btn btn-outline-success btn-sm mt-3 w-100">
+                        <i class="bi bi-wallet2 me-1"></i> Solicitar Préstamo
+                    </a>
+                </div>
+            </div>
+
+            <!-- 4. Actividades y Eventos -->
+            <div class="col-md-4">
+                <div class="card modulo-card asociado shadow-sm p-3 d-flex flex-column justify-content-between">
+                    <div>
+                        <i class="bi bi-calendar-event-fill icono-principal"></i>
+                        <h4 class="text-success mt-2">Actividades</h4>
+                        <strong>Eventos del Club</strong>
+                        <p class="text-muted mt-2">Consulta e inscríbete a actividades recreativas y deportivas.</p>
+                    </div>
+                    <a href="RegistroActividades.html" class="btn btn-outline-success btn-sm mt-3 w-100">
+                        <i class="bi bi-calendar-check me-1"></i> Ver Actividades
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 
