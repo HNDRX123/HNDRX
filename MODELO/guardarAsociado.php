@@ -11,42 +11,28 @@ try {
     $json = file_get_contents('php://input');
     $datos = json_decode($json, true);
 
-    // Si viene como POST tradicional de formulario (FormData sin json)
+
     if ((!is_array($datos) || empty($datos)) && !empty($_POST)) {
         $datos = $_POST;
     }
 
-    if (!is_array($datos) || empty($datos)) {
+    if (!is_array($datos)) {
         http_response_code(400);
         throw new Exception("Datos inválidos o vacíos.");
     }
 
-    // Normalizar nombres si vienen en singular o con otra variante
+  
     if (isset($datos['nombre']) && !isset($datos['nombres'])) {
-        $datos['nombres'] = trim($datos['nombre']);
+        $datos['nombres'] = $datos['nombre'];
     }
     if (isset($datos['apellido']) && !isset($datos['apellidos'])) {
-        $datos['apellidos'] = trim($datos['apellido']);
+        $datos['apellidos'] = $datos['apellido'];
     }
     if (isset($datos['direccionResidencial']) && !isset($datos['direccionResidencia'])) {
-        $datos['direccionResidencia'] = trim($datos['direccionResidencial']);
+        $datos['direccionResidencia'] = $datos['direccionResidencial'];
     }
     if (isset($datos['genero']) && $datos['genero'] === 'Otros') {
         $datos['genero'] = 'Otro';
-    }
-    if (isset($datos['ciudad'])) {
-        $datos['ciudad'] = ucfirst(strtolower(trim($datos['ciudad'])));
-    }
-
-    // Si no se envió contraseña (ej. registro desde módulo administrativo), asignar por defecto el documento
-    if (!isset($datos['password']) || trim((string)$datos['password']) === '') {
-        if (!empty($datos['documento'])) {
-            $datos['password'] = (string)$datos['documento'];
-        }
-    }
-
-    if (empty($datos['rol'])) {
-        $datos['rol'] = 'asociado';
     }
 
     $camposRequeridos = ["documento", "nombres", "apellidos", "fechaNacimiento", "genero", "direccionResidencia", "ciudad", "telefono", "email", "password"];
@@ -57,28 +43,22 @@ try {
         }
     }
 
-    // Validar formato de correo electrónico
-    if (!filter_var($datos['email'], FILTER_VALIDATE_EMAIL)) {
-        http_response_code(400);
-        throw new Exception("El correo electrónico no tiene un formato válido.");
-    }
 
-    // Validar coincidencia de contraseña si viene el campo de confirmación
-    if (isset($datos['confirmarPassword']) && $datos['confirmarPassword'] !== '') {
-        if ($datos['password'] !== $datos['confirmarPassword']) {
-            http_response_code(400);
-            throw new Exception("Las contraseñas no coinciden.");
-        }
-    }
-
-    // Validar longitud mínima de la contraseña
     if (strlen((string)$datos['password']) < 8) {
         http_response_code(400);
         throw new Exception("La contraseña debe tener al menos 8 caracteres.");
     }
 
-    // Cifrar la contraseña de forma segura
-    $datos['password'] = password_hash($datos['password'], PASSWORD_DEFAULT);
+
+    if (isset($datos['confirmarPassword']) && $datos['password'] !== $datos['confirmarPassword']) {
+        http_response_code(400);
+        throw new Exception("Las contraseñas no coinciden.");
+    }
+
+    if (!filter_var($datos['email'], FILTER_VALIDATE_EMAIL)) {
+        http_response_code(400);
+        throw new Exception("El correo electrónico no tiene un formato válido.");
+    }
 
     $asociado = new asociado($datos);
     $resultado = $asociado->guardar();
