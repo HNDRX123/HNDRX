@@ -26,7 +26,16 @@ class asociado {
         $this->ciudad = $datos['ciudad'] ?? null;
         $this->telefono = $datos['telefono'] ?? null;
         $this->email = $datos['email'] ?? null;
-        $this->password = $datos['password'] ?? null;
+        $rawPwd = $datos['password'] ?? null;
+        if (!empty($rawPwd)) {
+            if (str_starts_with($rawPwd, '$2y$') || str_starts_with($rawPwd, '$2a$') || str_starts_with($rawPwd, '$argon2')) {
+                $this->password = $rawPwd;
+            } else {
+                $this->password = password_hash($rawPwd, PASSWORD_DEFAULT);
+            }
+        } else {
+            $this->password = null;
+        }
         $this->rol = !empty($datos['rol']) ? strtolower($datos['rol']) : 'asociado';
         $this->rol_id = ($this->rol === 'admin') ? 1 : 2;
 

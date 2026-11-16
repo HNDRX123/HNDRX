@@ -1,39 +1,81 @@
-const formulario = document.getElementById('loginForm');
-formulario.addEventListener('submit', async function (e) {
-    e.preventDefault();
+function inicializarLogin() {
+    const formulario = document.getElementById('formLogin') || document.getElementById('loginForm');
+    const mensaje = document.getElementById('mensajeLogin');
 
-    const boton = formulario.querySelector('button[type="submit"]');
-    alert('Iniciando sesión...');
-    const mensaje = formulario.getElementById('mensajeLogin');
+    if (!formulario) {
+        console.error('No se encontró el formulario de inicio de sesión');
+        return;
+    }
 
-    boton.disabled = true;
+    if (formulario.dataset.iniciado === 'true') return;
+    formulario.dataset.iniciado = 'true';
 
-    try {
-        const respuesta = await fetch(formulario.action, {
-            method: 'POST',
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify(Object.fromEntries(new FormData(formulario).entries()))
-        });
+    formulario.addEventListener('submit', async function (e) {
+        e.preventDefault();
 
-        const resultado = await respuesta.json();
+        const boton = formulario.querySelector('button[type="submit"]');
+        if (boton) boton.disabled = true;
 
-        if (!resultado.success) {
-            mensaje.txtContent = "NO fue posible iniciar sesión. Por favor, verifique sus credenciales.";
-            boton.disabled = false;
-            return;
+        if (mensaje) {
+            mensaje.className = 'text-info mt-3 mb-0';
+            mensaje.textContent = 'Verificando credenciales...';
         }
 
-        localStorage.setItem('logueado', 'true');
-        localStorage.setItem('rol', resultado.rol);
-        localStorage.setItem('nombre', resultado.nombre || usuarioInput);
-        window.location.href = 'dashboard.html';
+        try {
+            const formData = new FormData(formulario);
+            const datos = Object.fromEntries(formData.entries());
 
-    } catch(error) {
-        console.error("error al iniciar sesion", error);
-        mensaje.txtContent=
-        "Ocurrio un error al intentar iniciar sesion. Por favor, intente nuevamente.";
+            const url = formulario.action || '../MODELO/inicioSesion.php';
 
-    }finally {
-        boton.disabled = false;
-    }
-});
+            const respuesta = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+                body: JSON.stringify(datos)
+            });
+
+            const resultado = await respuesta.json();
+
+            if (!respuesta.ok || !resultado.success) {
+                if (mensaje) {
+                    mensaje.className = 'text-danger mt-3 mb-0';
+                    mensaje.textContent = resultado.message || resultado.mensaje || "No fue posible iniciar sesión. Por favor, verifique sus credenciales.";
+                }
+                return;
+            }
+
+            // Guardar variables de sesión en localStorage
+            localStorage.setItem('logeado', 'true');
+            localStorage.setItem('logueado', 'true');
+            localStorage.setItem('rol', (resultado.rol || 'asociado').toLowerCase());
+            localStorage.setItem('nombre', resultado.nombre || '');
+            localStorage.setItem('email', resultado.email || datos.email || '');
+            localStorage.setItem('documento', resultado.documento || '');
+
+            if (mensaje) {
+                mensaje.className = 'text-success mt-3 mb-0';
+                mensaje.textContent = '¡Inicio de sesión exitoso! Redirigiendo...';
+            }
+
+            window.location.href = 'dashboard.html';
+
+        } catch (error) {
+            console.error("Error al iniciar sesión:", error);
+            if (mensaje) {
+                mensaje.className = 'text-danger mt-3 mb-0';
+                mensaje.textContent = "Ocurrió un error al intentar iniciar sesión. Por favor, intente nuevamente.";
+            }
+        } finally {
+            if (boton) boton.disabled = false;
+        }
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarLogin);
+} else {
+    inicializarLogin();
+}
