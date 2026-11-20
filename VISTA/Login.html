@@ -8,14 +8,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
     <style>
+        :root {
+            --primary-mr: #1177a0;
+            --primary-dark-mr: #0b2286;
+            --primary-hover-mr: #0e5e7e;
+        }
         .header-mr { 
-            background-color: #1177a0; 
+            background-color: var(--primary-mr); 
             color: #fff; 
             padding: 1rem 1.5rem; 
-            border-bottom: 4px solid #0b2286; 
+            border-bottom: 4px solid var(--primary-dark-mr); 
         }
         .login-card { 
-            border-top: 4px solid #1177a0; 
+            border-top: 4px solid var(--primary-mr); 
             transition: box-shadow .15s; 
         }
         .login-card:hover { 
@@ -23,7 +28,37 @@
         }
         .icono-login { 
             font-size: 3rem; 
-            color: #1177a0; 
+            color: var(--primary-mr); 
+        }
+        .header-mr .btn-outline-light {
+            color: #ffffff !important;
+            border-color: #ffffff !important;
+        }
+        .header-mr .btn-outline-light:hover {
+            color: var(--primary-mr) !important;
+            background-color: #ffffff !important;
+        }
+        .text-primary {
+            color: var(--primary-mr) !important;
+        }
+        a:not(.btn) {
+            color: var(--primary-mr);
+        }
+        a:not(.btn):hover {
+            color: var(--primary-hover-mr);
+        }
+        .btn-primary {
+            background-color: var(--primary-mr) !important;
+            border-color: var(--primary-mr) !important;
+            color: #ffffff !important;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-hover-mr) !important;
+            border-color: #0b4e69 !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-mr) !important;
+            box-shadow: 0 0 0 0.25rem rgba(17, 119, 160, 0.25) !important;
         }
     </style>
 </head>

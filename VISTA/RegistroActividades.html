@@ -10,14 +10,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
     <style>
+        :root {
+            --primary-mr: #1177a0;
+            --primary-dark-mr: #0b2286;
+            --primary-hover-mr: #0e5e7e;
+        }
         .header-mr { 
-            background-color: #1177a0; 
+            background-color: var(--primary-mr); 
             color: #fff; 
             padding: 1rem 1.5rem; 
-            border-bottom: 4px solid #0b2286; 
+            border-bottom: 4px solid var(--primary-dark-mr); 
         }
         .form-card { 
-            border-top: 4px solid #1177a0; 
+            border-top: 4px solid var(--primary-mr); 
             transition: box-shadow .15s; 
         }
         .form-card:hover { 
@@ -25,21 +30,30 @@
         }
         .icono-seccion { 
             font-size: 2.75rem; 
-            color: #1177a0; 
+            color: var(--primary-mr); 
         }
-        .btn-primary-custom {
-            background-color: #1177a0;
-            border-color: #1177a0;
-            color: #ffffff;
+        .text-primary, a {
+            color: var(--primary-mr) !important;
+        }
+        a:hover {
+            color: var(--primary-hover-mr) !important;
+        }
+        .btn-primary, .btn-primary-custom {
+            background-color: var(--primary-mr) !important;
+            border-color: var(--primary-mr) !important;
+            color: #ffffff !important;
             font-weight: 600;
         }
-        .btn-primary-custom:hover {
-            background-color: #0e5e7e;
-            border-color: #0b4e69;
-            color: #ffffff;
+        .btn-primary:hover, .btn-primary:focus, .btn-primary-custom:hover, .btn-primary-custom:focus {
+            background-color: var(--primary-hover-mr) !important;
+            border-color: #0b4e69 !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-mr) !important;
+            box-shadow: 0 0 0 0.25rem rgba(17, 119, 160, 0.25) !important;
         }
         .section-title {
-            color: #1177a0;
+            color: var(--primary-mr);
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 0.4rem;
             margin-bottom: 1.25rem;
@@ -68,21 +82,70 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-9">
 
-                <!-- Tarjeta del Formulario -->
-                <div class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3">
-                    
-                    <div class="d-flex align-items-center gap-3 mb-4">
-                        <i class="bi bi-calendar-event-fill icono-seccion"></i>
-                        <div>
-                            <h3 class="fw-bold text-dark m-0">Registro de Actividades</h3>
-                            <p class="text-muted small m-0">Planifica, crea y programa los eventos sociales, deportivos y culturales del club</p>
+                <!-- Banner informativo para asociados -->
+                <div id="bannerAsociadoLectura" class="alert alert-info d-none shadow-sm mb-4" role="alert">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    <strong>Modo Consulta (Asociado):</strong> Puedes revisar el listado y la programación de todas las actividades y eventos del club.
+                </div>
+
+                <!-- Tarjeta Principal: Listado / CRUD de Actividades -->
+                <div class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-calendar-event-fill icono-seccion fs-2"></i>
+                            <div>
+                                <h4 class="fw-bold text-dark m-0">Gestión de Actividades y Eventos</h4>
+                                <p class="text-muted small m-0">Listado actualizado de eventos sociales, deportivos y culturales</p>
+                            </div>
                         </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-outline-secondary btn-sm shadow-sm" onclick="cargarActividades()">
+                                <i class="bi bi-arrow-clockwise me-1"></i> Actualizar
+                            </button>
+                            <button id="btnToggleFormulario" type="button" class="btn btn-primary-custom btn-sm shadow-sm" onclick="toggleFormulario()">
+                                <i class="bi bi-plus-circle me-1"></i> Nueva Actividad
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Actividad</th>
+                                    <th>Fecha</th>
+                                    <th>Lugar / Municipio</th>
+                                    <th>Total Recaudado</th>
+                                    <th id="thAcciones" class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaActividades">
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Cargando actividades...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tarjeta del Formulario (Solo Administradores - Ocultable) -->
+                <div id="seccionFormularioActividad" class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3 mb-4 d-none">
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-plus-square-fill icono-seccion fs-3"></i>
+                            <div>
+                                <h4 class="fw-bold text-dark m-0">Registrar Nueva Actividad</h4>
+                                <p class="text-muted small m-0">Completa los campos para programar un nuevo evento</p>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" aria-label="Cerrar" onclick="toggleFormulario()"></button>
                     </div>
 
                     <!-- Mensaje de confirmación -->
                     <div id="alertaExito" class="alert alert-success alert-dismissible fade d-none" role="alert">
                         <i class="bi bi-check-circle-fill me-2"></i>
-                        <strong>¡Actividad registrada con éxito!</strong> Los datos han sido procesados correctamente.
+                        <strong>¡Actividad registrada con éxito!</strong> El evento ha quedado guardado en la base de datos.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                     </div>
 
@@ -242,15 +305,59 @@
 
                         <!-- Botones de Acción -->
                         <div class="d-flex flex-wrap gap-2 justify-content-end pt-3 border-top">
+                            <button type="button" class="btn btn-outline-secondary px-4" onclick="toggleFormulario()">
+                                Cancelar
+                            </button>
                             <button type="reset" class="btn btn-outline-secondary px-4">
-                                <i class="bi bi-eraser me-1"></i> Limpiar Campos
+                                <i class="bi bi-eraser me-1"></i> Limpiar
                             </button>
                             <button type="submit" class="btn btn-primary-custom px-4 shadow-sm">
-                                <i class="bi bi-save2-fill me-1"></i> Registrar Actividad
+                                <i class="bi bi-save2-fill me-1"></i> Guardar Actividad
                             </button>
                         </div>
 
                     </form>
+                </div>
+
+                <!-- Modal Editar Actividad -->
+                <div class="modal fade" id="modalEditarActividad" tabindex="-1" aria-labelledby="modalEditarActividadLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="formEditarActividadModal">
+                                <div class="modal-header header-mr text-white">
+                                    <h5 class="modal-title" id="modalEditarActividadLabel"><i class="bi bi-pencil-square me-2"></i>Editar Actividad</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="editIdActividad">
+                                    
+                                    <div class="mb-3">
+                                        <label for="editNombreActividad" class="form-label fw-semibold">Nombre de la Actividad <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="editNombreActividad" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="editFechaActividad" class="form-label fw-semibold">Fecha del Evento <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="editFechaActividad" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="editLugarActividad" class="form-label fw-semibold">Lugar / Sede <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="editLugarActividad" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="editCostoActividad" class="form-label fw-semibold">Total Recaudado / Costo ($ COP)</label>
+                                        <input type="number" class="form-control" id="editCostoActividad" min="0" step="500">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Actualizar Actividad</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Pie de página -->
@@ -265,35 +372,7 @@
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('logeado') !== 'true') {
-                window.location.href = 'Login.html';
-            }
-        });
-
-        document.getElementById('formRegistroActividades').addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (!this.checkValidity()) {
-                e.stopPropagation();
-                this.classList.add('was-validated');
-                return;
-            }
-            
-            // Simulación de guardado exitoso
-            const alerta = document.getElementById('alertaExito');
-            alerta.classList.remove('d-none');
-            alerta.classList.add('show');
-            
-            // Desplazar suavemente a la alerta
-            alerta.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            // Limpiar formulario tras guardar
-            setTimeout(() => {
-                this.reset();
-                this.classList.remove('was-validated');
-            }, 1000);
-        });
-    </script>
+    <!-- Controlador de Actividades -->
+    <script src="../CONTROLADORES/RegistrosActividades.js"></script>
 </body>
 </html>

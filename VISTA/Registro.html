@@ -3,107 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLUB ACERÍAS - Registro</title>
-    <link rel="stylesheet" href="../ACCES/css/Style.css">
+    <title>CLUB ACERÍAS - Registro de Asociado</title>
+    <!-- Bootstrap 5.3.0 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Bootstrap Icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --primary-mr: #1177a0;
+            --primary-dark-mr: #0b2286;
+            --primary-hover-mr: #0e5e7e;
+        }
+        .header-mr { 
+            background-color: var(--primary-mr); 
+            color: #fff; 
+            padding: 1rem 1.5rem; 
+            border-bottom: 4px solid var(--primary-dark-mr); 
+        }
+        .registro-card { 
+            border-top: 4px solid var(--primary-mr); 
+            transition: box-shadow .15s; 
+        }
+        .registro-card:hover { 
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
+        }
+        .icono-registro { 
+            font-size: 3rem; 
+            color: var(--primary-mr); 
+        }
+        .header-mr .btn-outline-light {
+            color: #ffffff !important;
+            border-color: #ffffff !important;
+        }
+        .header-mr .btn-outline-light:hover {
+            color: var(--primary-mr) !important;
+            background-color: #ffffff !important;
+        }
+        .text-primary {
+            color: var(--primary-mr) !important;
+        }
+        a:not(.btn) {
+            color: var(--primary-mr);
+        }
+        a:not(.btn):hover {
+            color: var(--primary-hover-mr);
+        }
+        .btn-primary {
+            background-color: var(--primary-mr) !important;
+            border-color: var(--primary-mr) !important;
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-hover-mr) !important;
+            border-color: #0b4e69 !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-mr) !important;
+            box-shadow: 0 0 0 0.25rem rgba(17, 119, 160, 0.25) !important;
+        }
+    </style>
 </head>
-<body>
-    <div class="contenedor">
-        <h2>Registro de Asociado - Acerías</h2>
-        <form id="formRegistro" action="../MODELO/guardarAsociado.php" method="post">
+<body class="bg-light d-flex flex-column min-vh-100">
 
-            <div class="grupo-input">
-                <label for="documento">Documento</label>
-                <input type="text" id="documento" name="documento" inputmode="numeric" pattern="[0-9]+"
-                       required placeholder="Ejemplo: 1057000111">
-            </div>
+    <!-- Encabezado Institucional -->
+    <header class="header-mr shadow-sm d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-buildings-fill fs-3"></i>
+            <h3 class="m-0 fw-bold">CLUB ACERÍAS</h3>
+        </div>
+        <div>
+            <a href="Login.html" class="btn btn-outline-light btn-sm shadow-sm">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
+            </a>
+        </div>
+    </header>
 
-            <div class="grupo-input">
-                <label for="nombres">Nombres</label>
-                <input type="text" id="nombres" name="nombres" required placeholder="Ingrese sus nombres completos">
-            </div>
-
-            <div class="grupo-input">
-                <label for="apellidos">Apellidos</label>
-                <input type="text" id="apellidos" name="apellidos" required placeholder="Ingrese sus apellidos completos">
-            </div>
-
-            <div class="grupo-input">
-                <label for="fechaNacimiento">Fecha de nacimiento</label>
-                <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
-            </div>
-
-            <div class="grupo-input">
-                <label>Género</label>
-                <div class="grupo-radios">
-                    <label class="radio">
-                        <input type="radio" name="genero" id="generoM" value="Masculino" required>
-                        <span>Masculino</span>
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="genero" id="generoF" value="Femenino">
-                        <span>Femenino</span>
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="genero" id="generoO" value="Otro">
-                        <span>Otro</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="grupo-input">
-                <label for="direccionResidencia">Dirección de residencia</label>
-                <input type="text" id="direccionResidencia" name="direccionResidencia" required placeholder="Ingrese su dirección">
-            </div>
-
-            <div class="grupo-input">
-                <label for="ciudad">Ciudad</label>
-                <select id="ciudad" name="ciudad" required>
-                    <option value="" disabled selected>Seleccione una ciudad</option>
-                    <option value="Sogamoso">Sogamoso</option>
-                    <option value="Duitama">Duitama</option>
-                    <option value="Tunja">Tunja</option>
-                </select>
-            </div>
-
-            <div class="grupo-input">
-                <label for="telefono">Teléfono</label>
-                <input type="tel" id="telefono" name="telefono" required placeholder="Ingrese su teléfono">
-            </div>
-
-            <div class="grupo-input">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required placeholder="correo@ejemplo.com">
-            </div>
-
-            <div class="grupo-input">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" required minlength="8" placeholder="Ingrese su contraseña (mínimo 8 caracteres)">
-            </div>
-
-            <div class="grupo-input">
-                <label for="confirmarPassword">Confirmar contraseña</label>
-                <input type="password" id="confirmarPassword" name="confirmarPassword" required minlength="8" placeholder="Repita su contraseña">
-            </div>
-
-            <div class="grupo-botones">
-                <button type="submit" class="btn-guardar">Guardar</button>
-                <button type="reset" class="btn-limpiar">Limpiar</button>
-            </div>
+    <!-- Contenedor Principal -->
+    <main class="container d-flex justify-content-center align-items-center flex-grow-1 py-4">
+        <div class="col-md-8 col-lg-7 col-xl-6">
             
-            <p id="mensajeRegistro" role="status" aria-live="polite" style="margin-top: 15px; text-align: center; font-weight: bold;"></p>
+            <div class="card registro-card shadow-sm p-4 p-md-5 bg-white rounded-3">
+                <div class="text-center mb-4">
+                    <i class="bi bi-person-plus-fill icono-registro"></i>
+                    <h4 class="fw-bold text-primary mt-2">Registro de Asociado</h4>
+                    <p class="text-muted small">Crea tu cuenta para acceder a los beneficios y actividades del club</p>
+                </div>
 
-            <div style="text-align: center; margin-top: 20px; border-top: 1px solid rgb(134, 124, 120); padding-top: 15px;">
-                <a href="Login.html" style="color: beige; text-decoration: none; font-size: 14px; display: block; margin-bottom: 8px;">
-                    ¿Ya tienes cuenta? <strong>Iniciar Sesión</strong>
-                </a>
-                <a href="dashboard.html" style="color: #dcdcdc; text-decoration: none; font-size: 13px;">
-                    &larr; Volver al Panel Principal
-                </a>
+                <form id="formRegistro" action="../MODELO/guardarAsociado.php" method="post" novalidate>
+                    
+                    <div class="row g-3">
+                        <!-- Documento -->
+                        <div class="col-12">
+                            <label for="documento" class="form-label fw-semibold">Documento de Identidad <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-card-text text-muted"></i></span>
+                                <input type="text" class="form-control" id="documento" name="documento" inputmode="numeric" pattern="[0-9]+" required placeholder="Ej: 1057000111">
+                            </div>
+                        </div>
+
+                        <!-- Nombres -->
+                        <div class="col-md-6">
+                            <label for="nombres" class="form-label fw-semibold">Nombres <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-person-fill text-muted"></i></span>
+                                <input type="text" class="form-control" id="nombres" name="nombres" required placeholder="Nombres completos">
+                            </div>
+                        </div>
+
+                        <!-- Apellidos -->
+                        <div class="col-md-6">
+                            <label for="apellidos" class="form-label fw-semibold">Apellidos <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-person text-muted"></i></span>
+                                <input type="text" class="form-control" id="apellidos" name="apellidos" required placeholder="Apellidos completos">
+                            </div>
+                        </div>
+
+                        <!-- Fecha de Nacimiento -->
+                        <div class="col-md-6">
+                            <label for="fechaNacimiento" class="form-label fw-semibold">Fecha de Nacimiento <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-calendar-event text-muted"></i></span>
+                                <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required>
+                            </div>
+                        </div>
+
+                        <!-- Género -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold d-block">Género <span class="text-danger">*</span></label>
+                            <div class="d-flex gap-3 pt-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="genero" id="generoM" value="Masculino" required checked>
+                                    <label class="form-check-label" for="generoM">Masculino</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="genero" id="generoF" value="Femenino">
+                                    <label class="form-check-label" for="generoF">Femenino</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="genero" id="generoO" value="Otro">
+                                    <label class="form-check-label" for="generoO">Otro</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dirección -->
+                        <div class="col-md-8">
+                            <label for="direccionResidencia" class="form-label fw-semibold">Dirección de Residencia <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-geo-alt-fill text-muted"></i></span>
+                                <input type="text" class="form-control" id="direccionResidencia" name="direccionResidencia" required placeholder="Ej: Calle 15 # 10-20">
+                            </div>
+                        </div>
+
+                        <!-- Ciudad -->
+                        <div class="col-md-4">
+                            <label for="ciudad" class="form-label fw-semibold">Ciudad <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-buildings text-muted"></i></span>
+                                <select class="form-select" id="ciudad" name="ciudad" required>
+                                    <option value="" disabled selected>Ciudad</option>
+                                    <option value="Sogamoso">Sogamoso</option>
+                                    <option value="Duitama">Duitama</option>
+                                    <option value="Tunja">Tunja</option>
+                                    <option value="Paipa">Paipa</option>
+                                    <option value="Nobsa">Nobsa</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Teléfono -->
+                        <div class="col-md-6">
+                            <label for="telefono" class="form-label fw-semibold">Teléfono Celular <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-telephone-fill text-muted"></i></span>
+                                <input type="tel" class="form-control" id="telefono" name="telefono" required placeholder="Ej: 3101234567">
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-6">
+                            <label for="email" class="form-label fw-semibold">Correo Electrónico <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-envelope-fill text-muted"></i></span>
+                                <input type="email" class="form-control" id="email" name="email" required placeholder="correo@ejemplo.com">
+                            </div>
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="col-md-6">
+                            <label for="password" class="form-label fw-semibold">Contraseña <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-lock-fill text-muted"></i></span>
+                                <input type="password" class="form-control" id="password" name="password" required minlength="8" placeholder="Mínimo 8 caracteres">
+                            </div>
+                        </div>
+
+                        <!-- Confirmar Contraseña -->
+                        <div class="col-md-6">
+                            <label for="confirmarPassword" class="form-label fw-semibold">Confirmar Contraseña <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-lock-check-fill text-muted"></i></span>
+                                <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword" required minlength="8" placeholder="Repita la contraseña">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 pt-3 border-top">
+                        <button type="reset" class="btn btn-outline-secondary px-4">
+                            <i class="bi bi-eraser me-1"></i> Limpiar
+                        </button>
+                        <button type="submit" class="btn btn-primary px-4 shadow-sm">
+                            <i class="bi bi-person-check-fill me-1"></i> Registrarse
+                        </button>
+                    </div>
+
+                    <!-- Mensajes de estado -->
+                    <div id="mensajeRegistro" class="text-center mt-3 fw-semibold small" role="status"></div>
+
+                    <!-- Enlace a Login -->
+                    <div class="text-center mt-3 pt-3 border-top">
+                        <a href="Login.html" class="text-decoration-none small">
+                            ¿Ya tienes cuenta? <strong>Inicia Sesión aquí</strong>
+                        </a>
+                        <br>
+                        <a href="dashboard.html" class="text-muted text-decoration-none small mt-2 d-inline-block">
+                            <i class="bi bi-arrow-left"></i> Volver al Panel
+                        </a>
+                    </div>
+
+                </form>
             </div>
 
-        </form>
-    </div>
+            <!-- Pie de página -->
+            <div class="text-center mt-3 text-muted small">
+                &copy; 2026 Club Acerías - Todos los derechos reservados
+            </div>
 
+        </div>
+    </main>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../CONTROLADORES/asociado.js"></script>
 </body>
 </html>

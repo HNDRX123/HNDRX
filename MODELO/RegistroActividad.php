@@ -1,61 +1,123 @@
 <?php
+/**
+ * ===================================================
+ * CLASE REGISTRO DE ACTIVIDAD - MODELO DE DATOS
+ * ===================================================
+ * Gestiona las operaciones CRUD sobre la tabla `actividades`.
+ * Maneja compatibilidad de esquema (totalRecaudado/totalRecaudo)
+ * mediante inspección dinámica de columnas.
+ */
+require_once __DIR__ . '/../CONFIG/conexion.php';
 
-require_once __DIR__ . '/../config/conexion.php';
-
-class RegistroActividad{
+class RegistroActividad {
 
     private $conexion;
 
-    public function __construct()
-    {
-        $conexion = new Conexion();
-        $this->conexion = $conexionDB->conectar();
+    /**
+     * Constructor vacío: la conexión se obtiene bajo demanda
+     * en cada operación mediante obtenerConexion().
+     */
+    public function __construct() {}
+
+    /**
+     * Obtiene la conexión a BD (lazy loading).
+     * @return PDO Conexión activa
+     */
+    private function obtenerConexion() {
+        if ($this->conexion === null) {
+            $this->conexion = (new conexion())->conectar();
+        }
+        return $this->conexion;
     }
 
-    public function obtenerActividades(){
-        $sql = "SELECT * FROM actividades ORDER BY fechaEvento ASC";
-        $consulta = $this->conexion->prepare($sql);
+    /**
+     * Detecta si la columna de recaudo se llama 'totalRecaudado' o 'totalRecaudo'.
+     * Esto permite compatibilidad con diferentes versiones del esquema de BD.
+     * @param PDO $db Conexión activa
+     * @return string Nombre real de la columna
+     */
+    private function detectarColumnaRecaudo($db) {
+        $columnas = $db->query("DESCRIBE actividades")->fetchAll(PDO::FETCH_COLUMN);
+        return in_array('totalRecaudado', $columnas) ? 'totalRecaudado' : 'totalRecaudo';
+    }
+
+    /**
+     * Obtiene todas las actividades ordenadas por fecha.
+     * @return array Lista de actividades
+     */
+    public function obtenerActividades() {
+        $db = $this->obtenerConexion();
+        $consulta = $db->prepare("SELECT * FROM actividades ORDER BY fechaEvento ASC");
         $consulta->execute();
         return $consulta->fetchAll();
     }
 
-    public function guardar(){
-        $sql = "INSERT INTO actividades (nombreActividad, fechaEvento, municipio) 
-                VALUES (:nombreActividad, :fechaEvento, :municipio)";
-        $consulta = $this->conexion->prepare($sql);
-        return $consulta->execute([
+    /**
+     * Inserta una nueva actividad en la BD.
+     * @param array $datos Datos validados de la actividad
+     * @return bool true si se insertó correctamente
+     */
+    public function guardar($datos) {
+        $db = $this->obtenerConexion();
+        $colRecaudo = $this->detectarColumnaRecaudo($db);
+        $recaudo = $datos['totalRecaudado'] ?? $datos['totalRecaudo'] ?? 0;
+
+        $sql = "INSERT INTO actividades (nombreActividad, fechaEvento, municipio, {$colRecaudo})
+                VALUES (:nombreActividad, :fechaEvento, :municipio, :recaudo)";
+
+        return $db->prepare($sql)->execute([
             ':nombreActividad' => $datos['nombreActividad'],
-            ':fechaEvento' => $datos['fechaEvento'],
-            ':municipio' => $datos['municipio']
+            ':fechaEvento'     => $datos['fechaEvento'],
+            ':municipio'       => $datos['municipio'],
+            ':recaudo'         => $recaudo
         ]);
     }
 
-    public function eliminar($id){
-        $sql = "DELETE FROM actividades WHERE idActividad = :idActividad";
-        $consulta = $this->conexion->prepare($sql);
-        $consulta->execute([':idActividad' => $idActividad]);
+    /**
+     * Elimina una actividad por su ID.
+     * @param int $id ID de la actividad
+     * @return bool true si se eliminó al menos un registro
+     */
+    public function eliminar($id) {
+        $db = $this->obtenerConexion();
+        $consulta = $db->prepare("DELETE FROM actividades WHERE idActividad = :idActividad");
+        $consulta->execute([':idActividad' => $id]);
         return $consulta->rowCount() > 0;
     }
 
-    public function editar($datos){
-        $sql = "UPDATE actividades SET nombreActividad = :nombreActividad, fechaEvento = :fechaEvento, municipio = :municipio, totalRecaudo = :totalRecaudo WHERE idActividad = :idActividad";
-        $consulta = $this->conexion->prepare($sql);
-        return $consulta->execute([
+    /**
+     * Actualiza una actividad existente.
+     * Si los datos no cambiaron, verifica que el registro exista para confirmar éxito.
+     * @param array $datos Datos actualizados (debe incluir idActividad)
+     * @return bool true si se actualizó o el registro existe
+     */
+    public function editar($datos) {
+        $db = $this->obtenerConexion();
+        $colRecaudo = $this->detectarColumnaRecaudo($db);
+        $recaudo = $datos['totalRecaudado'] ?? $datos['totalRecaudo'] ?? 0;
+
+        $sql = "UPDATE actividades
+                SET nombreActividad = :nombreActividad,
+                    fechaEvento = :fechaEvento,
+                    municipio = :municipio,
+                    {$colRecaudo} = :recaudo
+                WHERE idActividad = :idActividad";
+
+        $consulta = $db->prepare($sql);
+        $ok = $consulta->execute([
             ':nombreActividad' => $datos['nombreActividad'],
-            ':fechaEvento' => $datos['fechaEvento'],
-            ':municipio' => $datos['municipio'],
-            ':totalRecaudo' => $datos['totalRecaudo'],
-            ':idActividad' => $datos['idActividad']
+            ':fechaEvento'     => $datos['fechaEvento'],
+            ':municipio'       => $datos['municipio'],
+            ':recaudo'         => $recaudo,
+            ':idActividad'     => $datos['idActividad']
         ]);
 
-        if($consulta->rowCount() > 0){
-            return true;
-        } 
+        if (!$ok) return false;
+        if ($consulta->rowCount() > 0) return true;
 
-        $verificar = $this->conexion->prepare("SELECT 1 FROM actividades WHERE idActividad = :idActividad");
+        // Si rowCount es 0, verificar que el registro exista (datos iguales = sin cambios)
+        $verificar = $db->prepare("SELECT 1 FROM actividades WHERE idActividad = :idActividad");
         $verificar->execute([':idActividad' => $datos['idActividad']]);
-
-        return(bool)$verificar->fetchColumn(); 
+        return (bool)$verificar->fetchColumn();
     }
-
 }
