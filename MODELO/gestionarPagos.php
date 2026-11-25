@@ -4,19 +4,21 @@ session_start();
 header("Content-Type: application/json; charset=utf-8");
 require_once __DIR__ . '/../config/conexion.php';
 
-function responderJson(int $status, array$payload): never {
+// Envía la respuesta en JSON y termina el script
+function responderJson(int $status, array $payload): never {
     http_response_code($status);
     echo json_encode($payload);
     exit;
 }
 
-function resolverIdPrestamo(PDO $conexion, ?int $idPrestamo, string$documento, float $monto, string$fecha): int {
-    if ($idPrestamo &&$idPrestamo > 0) {
+// Decide a qué préstamo se asocia el pago
+function resolverIdPrestamo(PDO $conexion, ?int $idPrestamo, string $documento, float $monto, string $fecha): int {
+    if ($idPrestamo && $idPrestamo > 0) {
         return $idPrestamo;
     }
 
     if ($documento !== '') {
-        $buscaPrestamo =$conexion->prepare("
+        $buscaPrestamo = $conexion->prepare("
             SELECT p.idPrestamo
             FROM prestamos p
             INNER JOIN asociados a ON p.idAsociado = a.idAsociado
@@ -24,29 +26,30 @@ function resolverIdPrestamo(PDO $conexion, ?int $idPrestamo, string$documento, f
             ORDER BY p.idPrestamo DESC
             LIMIT 1
         ");
-        $buscaPrestamo->execute([':doc' =>$documento]);
-        $prestamoEncontrado =$buscaPrestamo->fetch();
+        $buscaPrestamo->execute([':doc' => $documento]);
+        $prestamoEncontrado = $buscaPrestamo->fetch();
         if ($prestamoEncontrado) {
             return (int)$prestamoEncontrado['idPrestamo'];
         }
     }
 
-    $primerPrestamo =$conexion->query("SELECT idPrestamo FROM prestamos ORDER BY idPrestamo DESC LIMIT 1")->fetch();
+    $primerPrestamo = $conexion->query("SELECT idPrestamo FROM prestamos ORDER BY idPrestamo DESC LIMIT 1")->fetch();
     if ($primerPrestamo) {
         return (int)$primerPrestamo['idPrestamo'];
     }
 
-    $buscaAsoc =$conexion->query("SELECT idAsociado FROM asociados ORDER BY idAsociado ASC LIMIT 1")->fetch();
+    $buscaAsoc = $conexion->query("SELECT idAsociado FROM asociados ORDER BY idAsociado ASC LIMIT 1")->fetch();
     if (!$buscaAsoc) {
         throw new Exception("Debe registrar un asociado antes de asentar pagos.", 400);
     }
 
-    $creaPrestamo =$conexion->prepare("
+    $creaPrestamo = $conexion->prepare("
         INSERT INTO prestamos (valorPrestamo, tasaInteres, numeroCuotas, fechaPrestamo, idAsociado)
         VALUES (:valor, 1.2, 12, :fecha, :idAsociado)
     ");
     $creaPrestamo->execute([
-        ':valor'      => $monto * 5, ':fecha'      =>$fecha,
+        ':valor'      => $monto * 5,
+        ':fecha'      => $fecha,
         ':idAsociado' => $buscaAsoc['idAsociado']
     ]);
 
@@ -56,6 +59,7 @@ function resolverIdPrestamo(PDO $conexion, ?int $idPrestamo, string$documento, f
 try {
     $conexion = (new conexion())->conectar();
 
+    // Rol y documento del usuario que hizo la petición
     $rolActual = strtolower($_SESSION["rol"] ?? '');
     if (empty($rolActual) && isset($_SERVER['HTTP_X_USER_ROLE'])) {
         $rolActual = strtolower($_SERVER['HTTP_X_USER_ROLE']);
@@ -70,13 +74,15 @@ try {
         throw new Exception("Inicia sesión para consultar o gestionar pagos.", 401);
     }
 
+    // Datos que llegan: primero JSON, y si no hay, el formulario normal
     $metodo = strtoupper($_SERVER["REQUEST_METHOD"] ?? 'GET');
     $raw = file_get_contents("php://input");
     $datos = json_decode($raw, true);
-    if (!is_array($datos) \vert{}\vert{} empty($datos)) {
-        $datos =$_POST;
+    if (!is_array($datos) || empty($datos)) {
+        $datos = $_POST;
     }
 
+    // Solo el admin puede crear, editar o eliminar
     if ($metodo !== "GET" && $rolActual !== 'admin') {
         throw new Exception("No tienes permisos de administrador para realizar esta acción.", 403);
     }
@@ -90,26 +96,30 @@ try {
                         %s JOIN asociados a ON p.idAsociado = a.idAsociado
                         %s ORDER BY pc.idPago DESC";
 
-            if ($rolActual === 'admin') {$stmt = $conexion->query(sprintf($sqlBase, 'LEFT', 'LEFT', ''));
+            if ($rolActual === 'admin') {
+                // El admin ve todos los pagos
+                $stmt = $conexion->query(sprintf($sqlBase, 'LEFT', 'LEFT', ''));
             } else {
+                // El asociado ve solo sus pagos
                 $stmt = $conexion->prepare(sprintf($sqlBase, 'INNER', 'INNER', 'WHERE a.documento = :doc'));
-                $stmt->execute([':doc' =>$docSesion]);
+                $stmt->execute([':doc' => $docSesion]);
             }
 
             responderJson(200, ["success" => true, "rol" => $rolActual, "pagos" => $stmt->fetchAll()]);
 
         case "POST":
             $monto = filter_var($datos['valorCuota'] ?? $datos['monto'] ?? 0, FILTER_VALIDATE_FLOAT);
-            $fecha = !empty($datos['fechaPago']) ? $datos['fechaPago'] : date('Y-m-d');$idPrestamoInput = filter_var($datos['idPrestamo'] ?? $datos['numeroPrestamo'] ?? null, FILTER_VALIDATE_INT) ?: null;
+            $fecha = !empty($datos['fechaPago']) ? $datos['fechaPago'] : date('Y-m-d');
+            $idPrestamoInput = filter_var($datos['idPrestamo'] ?? $datos['numeroPrestamo'] ?? null, FILTER_VALIDATE_INT) ?: null;
             $documento = trim((string)($datos['documentoAsociado'] ?? $datos['documento'] ?? $docSesion ?? ''));
 
-            if (!$monto \vert{}\vert{}$monto <= 0) {
+            if (!$monto || $monto <= 0) {
                 throw new Exception("El valor del pago debe ser mayor a 0.", 400);
             }
 
-            $idPrestamo = resolverIdPrestamo($conexion, $idPrestamoInput,$documento, (float)$monto,$fecha);
+            $idPrestamo = resolverIdPrestamo($conexion, $idPrestamoInput, $documento, (float)$monto, $fecha);
 
-            $stmt =$conexion->prepare("
+            $stmt = $conexion->prepare("
                 INSERT INTO pagos_cuotas (valorCuota, fechaPago, idPrestamo)
                 VALUES (:valor, :fecha, :idPrestamo)
             ");
@@ -132,13 +142,13 @@ try {
             }
 
             $monto = filter_var($datos['valorCuota'] ?? 0, FILTER_VALIDATE_FLOAT);
-            if (!$monto \vert{}\vert{}$monto <= 0) {
+            if (!$monto || $monto <= 0) {
                 throw new Exception("El valor del pago debe ser mayor a 0.", 400);
             }
-            $fecha =$datos['fechaPago'] ?? date('Y-m-d');
+            $fecha = $datos['fechaPago'] ?? date('Y-m-d');
 
             $conexion->prepare("UPDATE pagos_cuotas SET valorCuota = :valor, fechaPago = :fecha WHERE idPago = :id")
-                     ->execute([':valor' => $monto, ':fecha' => $fecha, ':id' =>$id]);
+                     ->execute([':valor' => $monto, ':fecha' => $fecha, ':id' => $id]);
 
             responderJson(200, ["success" => true, "message" => "Pago actualizado exitosamente."]);
 
@@ -148,8 +158,8 @@ try {
                 throw new Exception("Identificador de pago no válido.", 400);
             }
 
-            $stmt =$conexion->prepare("DELETE FROM pagos_cuotas WHERE idPago = :id");
-            $stmt->execute([':id' =>$id]);
+            $stmt = $conexion->prepare("DELETE FROM pagos_cuotas WHERE idPago = :id");
+            $stmt->execute([':id' => $id]);
 
             if ($stmt->rowCount() <= 0) {
                 throw new Exception("No se encontró el registro de pago o ya fue eliminado.", 404);
