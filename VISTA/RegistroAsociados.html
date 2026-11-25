@@ -4,33 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLUB ACERÍAS - Gestión de Asociados</title>
-    <!-- Bootstrap 5.3.0 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <!-- Bootstrap Icons 1.11.3 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
     <style>
         :root {
             --primary-mr: #1177a0;
             --primary-dark-mr: #0b2286;
             --primary-hover-mr: #0e5e7e;
         }
-        .header-mr { 
-            background-color: var(--primary-mr); 
-            color: #fff; 
-            padding: 1rem 1.5rem; 
-            border-bottom: 4px solid var(--primary-dark-mr); 
+        .header-mr {
+            background-color: var(--primary-mr);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-bottom: 4px solid var(--primary-dark-mr);
         }
-        .form-card { 
-            border-top: 4px solid var(--primary-mr); 
-            transition: box-shadow .15s; 
+        .form-card {
+            border-top: 4px solid var(--primary-mr);
+            transition: box-shadow .15s;
         }
-        .form-card:hover { 
-            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
+        .form-card:hover {
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
         }
-        .icono-seccion { 
-            font-size: 2.75rem; 
-            color: var(--primary-mr); 
+        .icono-seccion {
+            font-size: 2.75rem;
+            color: var(--primary-mr);
         }
         .text-primary, a {
             color: var(--primary-mr) !important;
@@ -63,32 +60,26 @@
     </style>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
-
-    <!-- Encabezado Institucional -->
     <header class="header-mr shadow-sm d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-2">
             <i class="bi bi-buildings-fill fs-3"></i>
             <h3 class="m-0 fw-bold">CLUB ACERÍAS</h3>
         </div>
         <div>
-            <a href="dashboard.html" class="btn btn-outline-dark btn-sm shadow-sm">
+            <a href="dashboard.html" class="btn btn-outline-light btn-sm shadow-sm">
                 <i class="bi bi-arrow-left-circle me-1"></i> Volver al Panel
             </a>
         </div>
     </header>
 
-    <!-- Contenedor Principal -->
     <main class="container py-4 flex-grow-1">
         <div class="row justify-content-center">
             <div class="col-lg-11 col-xl-10">
-
-                <!-- Banner informativo para asociados -->
                 <div id="bannerAsociadoLectura" class="alert alert-info d-none shadow-sm mb-4" role="alert">
                     <i class="bi bi-info-circle-fill me-2"></i>
                     <strong>Modo Consulta (Asociado):</strong> Puedes consultar el directorio y listado de asociados del club. Solo el administrador puede afiliar nuevos miembros, modificar sus datos o retirarlos.
                 </div>
 
-                <!-- Tarjeta Principal: Listado / CRUD de Asociados -->
                 <div class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3 mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                         <div class="d-flex align-items-center gap-3">
@@ -130,9 +121,7 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta del Formulario (Solo Administradores - Ocultable) -->
                 <div id="seccionFormularioAsociado" class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3 mb-4 d-none">
-                    
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div class="d-flex align-items-center gap-3">
                             <i class="bi bi-person-plus-fill icono-seccion fs-3"></i>
@@ -144,7 +133,6 @@
                         <button type="button" class="btn-close" aria-label="Cerrar" onclick="toggleFormulario()"></button>
                     </div>
 
-                    <!-- Mensaje de confirmación -->
                     <div id="alertaExito" class="alert alert-success alert-dismissible fade d-none" role="alert">
                         <i class="bi bi-check-circle-fill me-2"></i>
                         <strong>¡Asociado registrado con éxito!</strong> El nuevo socio ha quedado vinculado en el sistema.
@@ -152,12 +140,10 @@
                     </div>
 
                     <form id="formRegistroAsociados" action="" method="post" novalidate>
-                        
-                        <!-- Bloque 1: Identificación y Datos Personales -->
                         <h5 class="section-title">
                             <i class="bi bi-person-badge me-2"></i>1. Identificación y Datos Personales
                         </h5>
-                        
+
                         <div class="row g-3 mb-4">
                             <div class="col-md-4">
                                 <label for="documento" class="form-label fw-semibold">Documento de Identidad <span class="text-danger">*</span></label>
@@ -221,7 +207,6 @@
                             </div>
                         </div>
 
-                        <!-- Bloque 2: Contacto y Ubicación -->
                         <h5 class="section-title">
                             <i class="bi bi-geo-alt me-2"></i>2. Información de Contacto y Residencia
                         </h5>
@@ -240,154 +225,4 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-buildings text-muted"></i></span>
                                     <select class="form-select" id="ciudad" name="ciudad" required>
-                                        <option value="" disabled selected>Seleccione la ciudad</option>
-                                        <option value="Sogamoso">Sogamoso</option>
-                                        <option value="Duitama">Duitama</option>
-                                        <option value="Tunja">Tunja</option>
-                                        <option value="Paipa">Paipa</option>
-                                        <option value="Nobsa">Nobsa</option>
-                                        <option value="Tibasosa">Tibasosa</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="telefono" class="form-label fw-semibold">Teléfono Celular <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="bi bi-telephone text-muted"></i></span>
-                                    <input type="tel" class="form-control" id="telefono" name="telefono" required placeholder="Ej: 3101234567">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="email" class="form-label fw-semibold">Correo Electrónico <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="bi bi-envelope text-muted"></i></span>
-                                    <input type="email" class="form-control" id="email" name="email" required placeholder="correo@ejemplo.com">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Bloque 3: Acceso -->
-                        <h5 class="section-title">
-                            <i class="bi bi-lock me-2"></i>3. Contraseña de Acceso
-                        </h5>
-
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label for="password" class="form-label fw-semibold">Contraseña</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="bi bi-key text-muted"></i></span>
-                                    <input type="password" class="form-control" id="password" name="password" minlength="8" placeholder="Opcional (por defecto será el documento)">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="confirmarPassword" class="form-label fw-semibold">Confirmar Contraseña</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="bi bi-check2-circle text-muted"></i></span>
-                                    <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword" minlength="8" placeholder="Repita la contraseña">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Botones de Acción -->
-                        <div class="d-flex flex-wrap gap-2 justify-content-end pt-3 border-top">
-                            <button type="button" class="btn btn-outline-secondary px-4" onclick="toggleFormulario()">
-                                Cancelar
-                            </button>
-                            <button type="reset" class="btn btn-outline-secondary px-4">
-                                <i class="bi bi-eraser me-1"></i> Limpiar
-                            </button>
-                            <button type="submit" class="btn btn-primary px-4 shadow-sm">
-                                <i class="bi bi-check-lg me-1"></i> Guardar Asociado
-                            </button>
-                        </div>
-
-                    </form>
-                </div>
-
-                <!-- Modal Editar Asociado -->
-                <div class="modal fade" id="modalEditarAsociado" tabindex="-1" aria-labelledby="modalEditarAsociadoLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <form id="formEditarAsociadoModal">
-                                <div class="modal-header header-mr text-white">
-                                    <h5 class="modal-title" id="modalEditarAsociadoLabel"><i class="bi bi-pencil-square me-2"></i>Editar Asociado</h5>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="hidden" id="editIdAsociado">
-                                    
-                                    <div class="row g-3">
-                                        <div class="col-md-4">
-                                            <label for="editDocAsociado" class="form-label fw-semibold">Documento</label>
-                                            <input type="text" class="form-control" id="editDocAsociado" readonly disabled>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="editNombres" class="form-label fw-semibold">Nombres <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="editNombres" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="editApellidos" class="form-label fw-semibold">Apellidos <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="editApellidos" required>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label for="editEmail" class="form-label fw-semibold">Correo Electrónico <span class="text-danger">*</span></label>
-                                            <input type="email" class="form-control" id="editEmail" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="editTelefono" class="form-label fw-semibold">Teléfono Celular</label>
-                                            <input type="tel" class="form-control" id="editTelefono">
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label for="editCiudad" class="form-label fw-semibold">Ciudad</label>
-                                            <select class="form-select" id="editCiudad">
-                                                <option value="Sogamoso">Sogamoso</option>
-                                                <option value="Duitama">Duitama</option>
-                                                <option value="Tunja">Tunja</option>
-                                                <option value="Paipa">Paipa</option>
-                                                <option value="Nobsa">Nobsa</option>
-                                                <option value="Tibasosa">Tibasosa</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="editDireccion" class="form-label fw-semibold">Dirección</label>
-                                            <input type="text" class="form-control" id="editDireccion">
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label for="editRol" class="form-label fw-semibold">Rol <span class="text-danger">*</span></label>
-                                            <select class="form-select" id="editRol" required>
-                                                <option value="asociado">Asociado</option>
-                                                <option value="admin">Administrador</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Actualizar Asociado</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pie de página -->
-                <div class="text-center mt-3 text-muted small">
-                    &copy; 2026 Club Acerías - Sistema de Control y Gestión de Asociados
-                </div>
-
-            </div>
-        </div>
-    </main>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Controlador de Asociados -->
-    <script src="../CONTROLADORES/asociadosCrud.js"></script>
-</body>
-</html>
+                                        <option

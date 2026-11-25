@@ -1,22 +1,9 @@
 <?php
-/**
- * ===================================================
- * ENDPOINT - INICIO DE SESIÓN
- * ===================================================
- * Autentica al usuario verificando email y contraseña
- * contra la tabla `asociados`.
- *
- * Soporta dos modos de respuesta:
- *   - JSON (para peticiones AJAX desde login.js)
- *   - HTML con redirección (para envío directo de formulario)
- *
- * Si la contraseña estaba en texto plano, la migra a hash seguro.
- */
+
 session_start();
 
-// Detectar si la petición espera JSON
-$contentType    = $_SERVER['CONTENT_TYPE'] ?? $_SERVER['HTTP_CONTENT_TYPE'] ?? '';
-$accept         = $_SERVER['HTTP_ACCEPT'] ?? '';
+$contentType = $_SERVER['CONTENT_TYPE'] ?? $_SERVER['HTTP_CONTENT_TYPE'] ?? '';
+$accept = $_SERVER['HTTP_ACCEPT'] ?? '';
 $xRequestedWith = $_SERVER['HTTP_X_REQUESTED_WITH'] ?? '';
 
 $isJsonRequest = (
@@ -25,14 +12,26 @@ $isJsonRequest = (
     strtolower($xRequestedWith) === 'xmlhttprequest'
 );
 
+function responderJson(int $status, array $payload): never {
+    http_response_code($status);
+    header("Content-Type: application/json; charset=utf-8");
+    echo json_encode($payload);
+    exit;
+}
+
+function responderRedireccion(string $mensaje, string $url): never {
+    header("Content-Type: text/html; charset=utf-8");
+    $msgEscapado = json_encode($mensaje);
+    $urlEscapada = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
+    echo "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><title>Redirigiendo...</title></head><body><script>alert({$msgEscapado}); window.location.href='{$urlEscapada}';</script></body></html>";
+    exit;
+}
+
 try {
-    // Solo aceptar POST
     if (strtoupper($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-        http_response_code(405);
-        throw new Exception("Método HTTP no permitido. Debe usar POST.");
+        throw new Exception("Método HTTP no permitido. Debe usar POST.", 405);
     }
 
-    // ─── Leer datos de la petición ───
     $rawInput = file_get_contents('php://input');
     $datos = json_decode($rawInput, true);
 
@@ -41,21 +40,17 @@ try {
     }
 
     if (!is_array($datos)) {
-        http_response_code(400);
-        throw new Exception("Datos inválidos.");
+        throw new Exception("Datos inválidos.", 400);
     }
 
-    // Extraer credenciales
-    $email    = trim($datos['email'] ?? '');
+    $email = trim($datos['email'] ?? '');
     $password = (string)($datos['contrasena'] ?? $datos['password'] ?? '');
 
     if ($email === "" || $password === "") {
-        http_response_code(400);
-        throw new Exception("Email y contraseña son requeridos.");
+        throw new Exception("Email y contraseña son requeridos.", 400);
     }
 
-    // ─── Buscar asociado por email ───
-    require_once __DIR__ . '/../CONFIG/conexion.php';
+    require_once __DIR__ . '/../config/conexion.php';
     $conexion = (new conexion())->conectar();
 
     $consulta = $conexion->prepare("SELECT * FROM asociados WHERE email = :email");
@@ -63,99 +58,87 @@ try {
     $asociado = $consulta->fetch();
 
     if (!$asociado) {
-        http_response_code(401);
-        throw new Exception("Email o contraseña incorrectos.");
+        throw new Exception("Email o contraseña incorrectos.", 401);
     }
 
-    // ─── Verificar contraseña ───
-    $dbPassword    = (string)($asociado['clave'] ?? $asociado['password'] ?? '');
+    $dbPassword = (string)($asociado['clave'] ?? $asociado['password'] ?? '');
     $passwordValida = false;
 
     if (!empty($dbPassword)) {
         if (password_verify($password, $dbPassword)) {
-            // Contraseña hasheada verificada correctamente
             $passwordValida = true;
         } elseif ($password === $dbPassword) {
-            // Contraseña en texto plano: validar y migrar a hash seguro
             $passwordValida = true;
             try {
-                $colClave  = isset($asociado['clave']) ? 'clave' : 'password';
+                $colClave = isset($asociado['clave']) ? 'clave' : 'password';
                 $nuevoHash = password_hash($password, PASSWORD_DEFAULT);
                 $conexion->prepare("UPDATE asociados SET {$colClave} = :hash WHERE documento = :doc")
                          ->execute([':hash' => $nuevoHash, ':doc' => $asociado['documento']]);
             } catch (\Throwable $th) {
-                // No bloquear el login si falla la migración de contraseña
             }
         }
     }
 
     if (!$passwordValida) {
-        http_response_code(401);
-        throw new Exception("Email o contraseña incorrectos.");
+        throw new Exception("Email o contraseña incorrectos.", 401);
     }
 
-    // ─── Crear sesión del usuario ───
-    $rol    = !empty($asociado['rol']) ? strtolower($asociado['rol']) : 'asociado';
-    $nombre = trim(($asociado['nombres'] ?? '') . ' ' . ($asociado['apellidos'] ?? ''));
+    session_regenerate_id(true);
 
-    $_SESSION["rol"]        = $rol;
-    $_SESSION["documento"]  = $asociado['documento'];
-    $_SESSION["document"]   = $asociado['documento'];
-    $_SESSION["nombre"]     = $nombre;
-    $_SESSION["email"]      = $asociado['email'];
+    $rol = !empty($asociado['rol']) ? strtolower($asociado['rol']) : 'asociado';
+    $nombre = trim(($asociado['nombres'] ?? '') . ' ' . ($asociado['apellidos'] ?? ''));
+    $docStr = (string)($asociado['documento'] ?? '');
+    $emailStr = (string)($asociado['email'] ?? $email);
+
+    $_SESSION["rol"] = $rol;
+    $_SESSION["documento"] = $docStr;
+    $_SESSION["document"] = $docStr;
+    $_SESSION["nombre"] = $nombre;
+    $_SESSION["email"] = $emailStr;
     $_SESSION["idAsociado"] = $asociado['idAsociado'] ?? null;
 
-    // ─── Responder según el tipo de petición ───
     if ($isJsonRequest) {
-        // Respuesta JSON para AJAX
-        header("Content-Type: application/json; charset=utf-8");
-        echo json_encode([
+        responderJson(200, [
             "success"   => true,
             "rol"       => $rol,
             "nombre"    => $nombre,
-            "email"     => $asociado['email'] ?? $email,
-            "documento" => $asociado['documento'] ?? ''
+            "email"     => $emailStr,
+            "documento" => $docStr
         ]);
-        exit;
     }
 
-    // Respuesta HTML con redirección (envío directo de formulario)
     header("Content-Type: text/html; charset=utf-8");
-    $docStr   = (string)($asociado['documento'] ?? '');
-    $emailStr = (string)($asociado['email'] ?? $email);
+    $rolJson = json_encode($rol);
+    $nombreJson = json_encode($nombre);
+    $emailJson = json_encode($emailStr);
+    $docJson = json_encode($docStr);
+
     echo "<!DOCTYPE html>
 <html lang='es'>
 <head><meta charset='UTF-8'><title>Iniciando sesión...</title></head>
 <body>
     <script>
-        localStorage.setItem('logeado', 'true');
         localStorage.setItem('logueado', 'true');
-        localStorage.setItem('rol', " . json_encode($rol) . ");
-        localStorage.setItem('nombre', " . json_encode($nombre) . ");
-        localStorage.setItem('email', " . json_encode($emailStr) . ");
-        localStorage.setItem('documento', " . json_encode($docStr) . ");
-        window.location.href = '../VISTA/dashboard.html';
+        localStorage.setItem('rol', {$rolJson});
+        localStorage.setItem('nombre', {$nombreJson});
+        localStorage.setItem('email', {$emailJson});
+        localStorage.setItem('documento', {$docJson});
+        window.location.href = '../vista/dashboard.html';
     </script>
-    <p>Iniciando sesión... Si no es redirigido, <a href='../VISTA/dashboard.html'>haga clic aquí</a>.</p>
+    <p>Iniciando sesión... Si no es redirigido, <a href='../vista/dashboard.html'>haga clic aquí</a>.</p>
 </body>
 </html>";
     exit;
 
 } catch (PDOException $e) {
     if ($isJsonRequest) {
-        http_response_code(500);
-        header("Content-Type: application/json; charset=utf-8");
-        echo json_encode(["success" => false, "message" => "Error de base de datos: " . $e->getMessage()]);
-    } else {
-        echo "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body><script>alert('Error de base de datos'); window.location.href='../VISTA/Login.html';</script></body></html>";
+        responderJson(500, ["success" => false, "message" => "Error de base de datos: " . $e->getMessage()]);
     }
+    responderRedireccion("Error de base de datos", "../vista/Login.html");
 } catch (Exception $e) {
+    $codigo = ($e->getCode() >= 400 && $e->getCode() < 600) ? (int)$e->getCode() : 400;
     if ($isJsonRequest) {
-        if (http_response_code() === 200) http_response_code(400);
-        header("Content-Type: application/json; charset=utf-8");
-        echo json_encode(["success" => false, "message" => $e->getMessage()]);
-    } else {
-        $msg = addslashes($e->getMessage());
-        echo "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body><script>alert('$msg'); window.location.href='../VISTA/Login.html';</script></body></html>";
+        responderJson($codigo, ["success" => false, "message" => $e->getMessage()]);
     }
+    responderRedireccion($e->getMessage(), "../vista/Login.html");
 }

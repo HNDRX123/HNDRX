@@ -4,33 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLUB ACERÍAS - Gestión de Préstamos</title>
-    <!-- Bootstrap 5.3.0 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <!-- Bootstrap Icons 1.11.3 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
     <style>
         :root {
             --primary-mr: #1177a0;
             --primary-dark-mr: #0b2286;
             --primary-hover-mr: #0e5e7e;
         }
-        .header-mr { 
-            background-color: var(--primary-mr); 
-            color: #fff; 
-            padding: 1rem 1.5rem; 
-            border-bottom: 4px solid var(--primary-dark-mr); 
+        .header-mr {
+            background-color: var(--primary-mr);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-bottom: 4px solid var(--primary-dark-mr);
         }
-        .form-card { 
-            border-top: 4px solid var(--primary-mr); 
-            transition: box-shadow .15s; 
+        .form-card {
+            border-top: 4px solid var(--primary-mr);
+            transition: box-shadow .15s;
         }
-        .form-card:hover { 
-            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
+        .form-card:hover {
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
         }
-        .icono-seccion { 
-            font-size: 2.75rem; 
-            color: var(--primary-mr); 
+        .icono-seccion {
+            font-size: 2.75rem;
+            color: var(--primary-mr);
         }
         .text-primary, a {
             color: var(--primary-mr) !important;
@@ -69,8 +66,6 @@
     </style>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
-
-    <!-- Encabezado Institucional -->
     <header class="header-mr shadow-sm d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-2">
             <i class="bi bi-buildings-fill fs-3"></i>
@@ -83,18 +78,14 @@
         </div>
     </header>
 
-    <!-- Contenedor Principal -->
     <main class="container py-4 flex-grow-1">
         <div class="row justify-content-center">
             <div class="col-lg-11 col-xl-10">
-
-                <!-- Banner informativo para asociados -->
                 <div id="bannerAsociadoLectura" class="alert alert-info d-none shadow-sm mb-4" role="alert">
                     <i class="bi bi-info-circle-fill me-2"></i>
                     <strong>Modo Consulta (Asociado):</strong> Puedes consultar tus solicitudes y el estado de tus préstamos vigentes. Solo el administrador puede autorizar créditos, editarlos o cancelarlos.
                 </div>
 
-                <!-- Tarjeta Principal: Listado / CRUD de Préstamos -->
                 <div class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3 mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                         <div class="d-flex align-items-center gap-3">
@@ -137,9 +128,7 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta del Formulario (Solo Administradores - Ocultable) -->
                 <div id="seccionFormularioPrestamo" class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3 mb-4 d-none">
-                    
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div class="d-flex align-items-center gap-3">
                             <i class="bi bi-wallet2 icono-seccion fs-3"></i>
@@ -151,7 +140,6 @@
                         <button type="button" class="btn-close" aria-label="Cerrar" onclick="toggleFormulario()"></button>
                     </div>
 
-                    <!-- Mensaje de confirmación -->
                     <div id="alertaExito" class="alert alert-success alert-dismissible fade d-none" role="alert">
                         <i class="bi bi-check-circle-fill me-2"></i>
                         <strong>¡Préstamo registrado exitosamente!</strong> El crédito ha sido guardado en la base de datos.
@@ -159,12 +147,10 @@
                     </div>
 
                     <form id="formRegistroPrestamos" action="" method="post" novalidate>
-                        
-                        <!-- Bloque 1: Solicitante -->
                         <h5 class="section-title">
                             <i class="bi bi-person-lines-fill me-2"></i>1. Datos del Solicitante
                         </h5>
-                        
+
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label for="documentoAsociado" class="form-label fw-semibold">Documento del Asociado <span class="text-danger">*</span></label>
@@ -183,7 +169,6 @@
                             </div>
                         </div>
 
-                        <!-- Bloque 2: Condiciones del Préstamo -->
                         <h5 class="section-title">
                             <i class="bi bi-calculator me-2"></i>2. Condiciones Financieras del Préstamo
                         </h5>
@@ -216,22 +201,19 @@
                                 <label for="tasaInteres" class="form-label fw-semibold">Tasa de Interés (% Mensual) <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-percent text-muted"></i></span>
-                                    <input type="number" class="form-control" id="tasaInteres" name="tasaInteres" min="0" max="10" step="0.1" value="1.2" required>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <div class="simulador-box d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                    <div>
-                                        <span class="fw-semibold text-dark"><i class="bi bi-graph-up-arrow me-1"></i> Cuota Mensual Estimada:</span>
-                                        <div class="text-muted small">Cálculo aproximado bajo amortización de cuota fija.</div>
-                                    </div>
-                                    <div class="fs-4 fw-bold text-primary" id="valorCuotaEstimada">$ 0 COP</div>
+                                    <input type="number" class="form-control" id="tasaInteres" name="tasaInteres" min="0" max="20" step="0.1" value="1.2" required>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Botones de Acción -->
+                        <div class="simulador-box mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <div class="small text-muted fw-semibold">Cuota Mensual Estimada</div>
+                                <div class="text-muted small">Calculada con amortización fija según monto, plazo y tasa</div>
+                            </div>
+                            <div id="valorCuotaEstimada" class="fs-5 fw-bold text-primary">$ 0 COP</div>
+                        </div>
+
                         <div class="d-flex flex-wrap gap-2 justify-content-end pt-3 border-top">
                             <button type="button" class="btn btn-outline-secondary px-4" onclick="toggleFormulario()">
                                 Cancelar
@@ -243,11 +225,9 @@
                                 <i class="bi bi-check-lg me-1"></i> Guardar Préstamo
                             </button>
                         </div>
-
                     </form>
                 </div>
 
-                <!-- Modal Editar Préstamo -->
                 <div class="modal fade" id="modalEditarPrestamo" tabindex="-1" aria-labelledby="modalEditarPrestamoLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -258,29 +238,26 @@
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" id="editIdPrestamo">
-                                    <p class="text-muted small mb-3">Asociado: <strong id="editDetalleSocioPrestamo"></strong></p>
-                                    
+                                    <p class="small text-muted mb-3" id="editDetalleSocioPrestamo"></p>
+
                                     <div class="mb-3">
                                         <label for="editValorPrestamo" class="form-label fw-semibold">Monto del Préstamo ($ COP) <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-light"><i class="bi bi-currency-dollar"></i></span>
-                                            <input type="number" class="form-control" id="editValorPrestamo" min="50000" step="10000" required>
-                                        </div>
+                                        <input type="number" class="form-control" id="editValorPrestamo" min="1000" step="1000" required>
                                     </div>
 
-                                    <div class="row g-2 mb-3">
+                                    <div class="row g-3 mb-3">
                                         <div class="col-md-6">
-                                            <label for="editTasaInteres" class="form-label fw-semibold">Tasa (% Mensual) <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="editTasaInteres" min="0" max="10" step="0.1" required>
+                                            <label for="editTasaInteres" class="form-label fw-semibold">Tasa Mensual (%) <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="editTasaInteres" min="0" max="20" step="0.1" required>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="editNumeroCuotas" class="form-label fw-semibold">Plazo (Cuotas) <span class="text-danger">*</span></label>
+                                            <label for="editNumeroCuotas" class="form-label fw-semibold">Número de Cuotas <span class="text-danger">*</span></label>
                                             <input type="number" class="form-control" id="editNumeroCuotas" min="1" max="120" required>
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="editFechaPrestamo" class="form-label fw-semibold">Fecha de Préstamo <span class="text-danger">*</span></label>
+                                        <label for="editFechaPrestamo" class="form-label fw-semibold">Fecha del Préstamo <span class="text-danger">*</span></label>
                                         <input type="date" class="form-control" id="editFechaPrestamo" required>
                                     </div>
                                 </div>
@@ -293,18 +270,14 @@
                     </div>
                 </div>
 
-                <!-- Pie de página -->
                 <div class="text-center mt-3 text-muted small">
-                    &copy; 2026 Club Acerías - Sistema de Control y Gestión de Préstamos
+                    &copy; 2026 Club Acerías - Sistema de Gestión de Préstamos y Créditos
                 </div>
-
             </div>
         </div>
     </main>
 
-    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Controlador de Préstamos -->
-    <script src="../CONTROLADORES/prestamos.js"></script>
+    <script src="../controladores/prestamos.js"></script>
 </body>
 </html>

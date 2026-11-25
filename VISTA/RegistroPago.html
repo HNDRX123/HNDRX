@@ -4,33 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLUB ACERÍAS - Gestión de Pagos</title>
-    <!-- Bootstrap 5.3.0 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <!-- Bootstrap Icons 1.11.3 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
     <style>
         :root {
             --primary-mr: #1177a0;
             --primary-dark-mr: #0b2286;
             --primary-hover-mr: #0e5e7e;
         }
-        .header-mr { 
-            background-color: var(--primary-mr); 
-            color: #fff; 
-            padding: 1rem 1.5rem; 
-            border-bottom: 4px solid var(--primary-dark-mr); 
+        .header-mr {
+            background-color: var(--primary-mr);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-bottom: 4px solid var(--primary-dark-mr);
         }
-        .form-card { 
-            border-top: 4px solid var(--primary-mr); 
-            transition: box-shadow .15s; 
+        .form-card {
+            border-top: 4px solid var(--primary-mr);
+            transition: box-shadow .15s;
         }
-        .form-card:hover { 
-            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
+        .form-card:hover {
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
         }
-        .icono-seccion { 
-            font-size: 2.75rem; 
-            color: var(--primary-mr); 
+        .icono-seccion {
+            font-size: 2.75rem;
+            color: var(--primary-mr);
         }
         .text-primary, a {
             color: var(--primary-mr) !important;
@@ -63,8 +60,6 @@
     </style>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
-
-    <!-- Encabezado Institucional -->
     <header class="header-mr shadow-sm d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-2">
             <i class="bi bi-buildings-fill fs-3"></i>
@@ -77,18 +72,14 @@
         </div>
     </header>
 
-    <!-- Contenedor Principal -->
     <main class="container py-4 flex-grow-1">
         <div class="row justify-content-center">
             <div class="col-lg-11 col-xl-10">
-
-                <!-- Banner informativo para asociados -->
                 <div id="bannerAsociadoLectura" class="alert alert-info d-none shadow-sm mb-4" role="alert">
                     <i class="bi bi-info-circle-fill me-2"></i>
                     <strong>Modo Consulta (Asociado):</strong> Puedes revisar el historial y estado de tus cuotas y pagos registrados. Solo el administrador puede asentar, editar o anular pagos.
                 </div>
 
-                <!-- Tarjeta Principal: Listado / CRUD de Pagos -->
                 <div class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3 mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                         <div class="d-flex align-items-center gap-3">
@@ -130,9 +121,7 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta del Formulario (Solo Administradores - Ocultable) -->
                 <div id="seccionFormularioPago" class="card form-card shadow-sm p-4 p-md-5 bg-white rounded-3 mb-4 d-none">
-                    
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div class="d-flex align-items-center gap-3">
                             <i class="bi bi-receipt-cutoff icono-seccion fs-3"></i>
@@ -144,7 +133,6 @@
                         <button type="button" class="btn-close" aria-label="Cerrar" onclick="toggleFormulario()"></button>
                     </div>
 
-                    <!-- Mensaje de confirmación -->
                     <div id="alertaExito" class="alert alert-success alert-dismissible fade d-none" role="alert">
                         <i class="bi bi-check-circle-fill me-2"></i>
                         <strong>¡Pago registrado con éxito!</strong> La transacción ha sido guardada en el sistema.
@@ -152,12 +140,10 @@
                     </div>
 
                     <form id="formRegistroPago" action="" method="post" novalidate>
-                        
-                        <!-- Bloque 1: Identificación del Asociado -->
                         <h5 class="section-title">
                             <i class="bi bi-person-badge-fill me-2"></i>1. Datos del Asociado
                         </h5>
-                        
+
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label for="documentoAsociado" class="form-label fw-semibold">Documento del Asociado <span class="text-danger">*</span></label>
@@ -177,7 +163,6 @@
                             </div>
                         </div>
 
-                        <!-- Bloque 2: Información del Pago -->
                         <h5 class="section-title">
                             <i class="bi bi-wallet2 me-2"></i>2. Detalle del Pago
                         </h5>
@@ -214,7 +199,6 @@
                             </div>
                         </div>
 
-                        <!-- Botones de Acción -->
                         <div class="d-flex flex-wrap gap-2 justify-content-end pt-3 border-top">
                             <button type="button" class="btn btn-outline-secondary px-4" onclick="toggleFormulario()">
                                 Cancelar
@@ -226,11 +210,9 @@
                                 <i class="bi bi-check-lg me-1"></i> Guardar Pago
                             </button>
                         </div>
-
                     </form>
                 </div>
 
-                <!-- Modal Editar Pago -->
                 <div class="modal fade" id="modalEditarPago" tabindex="-1" aria-labelledby="modalEditarPagoLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -241,22 +223,16 @@
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" id="editIdPago">
-                                    <p class="text-muted small mb-3">Asociado: <strong id="editDetalleAsociado"></strong></p>
-                                    
+                                    <p class="small text-muted mb-3" id="editDetalleAsociado"></p>
+
                                     <div class="mb-3">
-                                        <label for="editValorCuota" class="form-label fw-semibold">Valor Cuota / Abono ($ COP) <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-light"><i class="bi bi-currency-dollar"></i></span>
-                                            <input type="number" class="form-control" id="editValorCuota" min="1000" step="500" required>
-                                        </div>
+                                        <label for="editValorCuota" class="form-label fw-semibold">Valor del Pago ($ COP) <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="editValorCuota" min="100" step="100" required>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="editFechaPago" class="form-label fw-semibold">Fecha de Pago <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-light"><i class="bi bi-calendar-event"></i></span>
-                                            <input type="date" class="form-control" id="editFechaPago" required>
-                                        </div>
+                                        <input type="date" class="form-control" id="editFechaPago" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -268,18 +244,14 @@
                     </div>
                 </div>
 
-                <!-- Pie de página -->
                 <div class="text-center mt-3 text-muted small">
-                    &copy; 2026 Club Acerías - Sistema de Control y Gestión de Pagos
+                    &copy; 2026 Club Acerías - Sistema de Gestión de Pagos y Cuotas
                 </div>
-
             </div>
         </div>
     </main>
 
-    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Controlador de Pagos -->
-    <script src="../CONTROLADORES/pagos.js"></script>
+    <script src="../controladores/pagos.js"></script>
 </body>
 </html>

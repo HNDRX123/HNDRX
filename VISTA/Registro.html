@@ -4,33 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLUB ACERÍAS - Registro de Asociado</title>
-    <!-- Bootstrap 5.3.0 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <!-- Bootstrap Icons 1.11.3 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
     <style>
         :root {
             --primary-mr: #1177a0;
             --primary-dark-mr: #0b2286;
             --primary-hover-mr: #0e5e7e;
         }
-        .header-mr { 
-            background-color: var(--primary-mr); 
-            color: #fff; 
-            padding: 1rem 1.5rem; 
-            border-bottom: 4px solid var(--primary-dark-mr); 
+        .header-mr {
+            background-color: var(--primary-mr);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-bottom: 4px solid var(--primary-dark-mr);
         }
-        .registro-card { 
-            border-top: 4px solid var(--primary-mr); 
-            transition: box-shadow .15s; 
+        .registro-card {
+            border-top: 4px solid var(--primary-mr);
+            transition: box-shadow .15s;
         }
-        .registro-card:hover { 
-            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
+        .registro-card:hover {
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
         }
-        .icono-registro { 
-            font-size: 3rem; 
-            color: var(--primary-mr); 
+        .icono-registro {
+            font-size: 3rem;
+            color: var(--primary-mr);
         }
         .header-mr .btn-outline-light {
             color: #ffffff !important;
@@ -66,8 +63,6 @@
     </style>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
-
-    <!-- Encabezado Institucional -->
     <header class="header-mr shadow-sm d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-2">
             <i class="bi bi-buildings-fill fs-3"></i>
@@ -80,10 +75,8 @@
         </div>
     </header>
 
-    <!-- Contenedor Principal -->
     <main class="container d-flex justify-content-center align-items-center flex-grow-1 py-4">
         <div class="col-md-8 col-lg-7 col-xl-6">
-            
             <div class="card registro-card shadow-sm p-4 p-md-5 bg-white rounded-3">
                 <div class="text-center mb-4">
                     <i class="bi bi-person-plus-fill icono-registro"></i>
@@ -91,10 +84,8 @@
                     <p class="text-muted small">Crea tu cuenta para acceder a los beneficios y actividades del club</p>
                 </div>
 
-                <form id="formRegistro" action="../MODELO/guardarAsociado.php" method="post" novalidate>
-                    
+                <form id="formRegistro" action="../modelo/guardarAsociado.php" method="post" novalidate>
                     <div class="row g-3">
-                        <!-- Documento -->
                         <div class="col-12">
                             <label for="documento" class="form-label fw-semibold">Documento de Identidad <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -103,7 +94,6 @@
                             </div>
                         </div>
 
-                        <!-- Nombres -->
                         <div class="col-md-6">
                             <label for="nombres" class="form-label fw-semibold">Nombres <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -112,7 +102,6 @@
                             </div>
                         </div>
 
-                        <!-- Apellidos -->
                         <div class="col-md-6">
                             <label for="apellidos" class="form-label fw-semibold">Apellidos <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -121,7 +110,6 @@
                             </div>
                         </div>
 
-                        <!-- Fecha de Nacimiento -->
                         <div class="col-md-6">
                             <label for="fechaNacimiento" class="form-label fw-semibold">Fecha de Nacimiento <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -130,7 +118,6 @@
                             </div>
                         </div>
 
-                        <!-- Género -->
                         <div class="col-md-6">
                             <label class="form-label fw-semibold d-block">Género <span class="text-danger">*</span></label>
                             <div class="d-flex gap-3 pt-2">
@@ -149,7 +136,6 @@
                             </div>
                         </div>
 
-                        <!-- Dirección -->
                         <div class="col-md-8">
                             <label for="direccionResidencia" class="form-label fw-semibold">Dirección de Residencia <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -158,7 +144,6 @@
                             </div>
                         </div>
 
-                        <!-- Ciudad -->
                         <div class="col-md-4">
                             <label for="ciudad" class="form-label fw-semibold">Ciudad <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -174,7 +159,6 @@
                             </div>
                         </div>
 
-                        <!-- Teléfono -->
                         <div class="col-md-6">
                             <label for="telefono" class="form-label fw-semibold">Teléfono Celular <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -183,7 +167,6 @@
                             </div>
                         </div>
 
-                        <!-- Email -->
                         <div class="col-md-6">
                             <label for="email" class="form-label fw-semibold">Correo Electrónico <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -192,7 +175,6 @@
                             </div>
                         </div>
 
-                        <!-- Contraseña -->
                         <div class="col-md-6">
                             <label for="password" class="form-label fw-semibold">Contraseña <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -201,7 +183,6 @@
                             </div>
                         </div>
 
-                        <!-- Confirmar Contraseña -->
                         <div class="col-md-6">
                             <label for="confirmarPassword" class="form-label fw-semibold">Confirmar Contraseña <span class="text-danger">*</span></label>
                             <div class="input-group">
@@ -211,7 +192,6 @@
                         </div>
                     </div>
 
-                    <!-- Botones de Acción -->
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 pt-3 border-top">
                         <button type="reset" class="btn btn-outline-secondary px-4">
                             <i class="bi bi-eraser me-1"></i> Limpiar
@@ -221,10 +201,8 @@
                         </button>
                     </div>
 
-                    <!-- Mensajes de estado -->
                     <div id="mensajeRegistro" class="text-center mt-3 fw-semibold small" role="status"></div>
 
-                    <!-- Enlace a Login -->
                     <div class="text-center mt-3 pt-3 border-top">
                         <a href="Login.html" class="text-decoration-none small">
                             ¿Ya tienes cuenta? <strong>Inicia Sesión aquí</strong>
@@ -234,20 +212,16 @@
                             <i class="bi bi-arrow-left"></i> Volver al Panel
                         </a>
                     </div>
-
                 </form>
             </div>
 
-            <!-- Pie de página -->
             <div class="text-center mt-3 text-muted small">
                 &copy; 2026 Club Acerías - Todos los derechos reservados
             </div>
-
         </div>
     </main>
 
-    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../CONTROLADORES/asociado.js"></script>
+    <script src="../controladores/asociado.js"></script>
 </body>
 </html>
