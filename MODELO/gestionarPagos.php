@@ -4,14 +4,14 @@ session_start();
 header("Content-Type: application/json; charset=utf-8");
 require_once __DIR__ . '/../config/conexion.php';
 
-// Envía la respuesta en JSON y termina el script
+
 function responderJson(int $status, array $payload): never {
     http_response_code($status);
     echo json_encode($payload);
     exit;
 }
 
-// Decide a qué préstamo se asocia el pago
+
 function resolverIdPrestamo(PDO $conexion, ?int $idPrestamo, string $documento, float $monto, string $fecha): int {
     if ($idPrestamo && $idPrestamo > 0) {
         return $idPrestamo;
@@ -59,7 +59,7 @@ function resolverIdPrestamo(PDO $conexion, ?int $idPrestamo, string $documento, 
 try {
     $conexion = (new conexion())->conectar();
 
-    // Rol y documento del usuario que hizo la petición
+
     $rolActual = strtolower($_SESSION["rol"] ?? '');
     if (empty($rolActual) && isset($_SERVER['HTTP_X_USER_ROLE'])) {
         $rolActual = strtolower($_SERVER['HTTP_X_USER_ROLE']);
@@ -74,7 +74,7 @@ try {
         throw new Exception("Inicia sesión para consultar o gestionar pagos.", 401);
     }
 
-    // Datos que llegan: primero JSON, y si no hay, el formulario normal
+ normal
     $metodo = strtoupper($_SERVER["REQUEST_METHOD"] ?? 'GET');
     $raw = file_get_contents("php://input");
     $datos = json_decode($raw, true);
@@ -82,7 +82,6 @@ try {
         $datos = $_POST;
     }
 
-    // Solo el admin puede crear, editar o eliminar
     if ($metodo !== "GET" && $rolActual !== 'admin') {
         throw new Exception("No tienes permisos de administrador para realizar esta acción.", 403);
     }
@@ -97,10 +96,8 @@ try {
                         %s ORDER BY pc.idPago DESC";
 
             if ($rolActual === 'admin') {
-                // El admin ve todos los pagos
                 $stmt = $conexion->query(sprintf($sqlBase, 'LEFT', 'LEFT', ''));
             } else {
-                // El asociado ve solo sus pagos
                 $stmt = $conexion->prepare(sprintf($sqlBase, 'INNER', 'INNER', 'WHERE a.documento = :doc'));
                 $stmt->execute([':doc' => $docSesion]);
             }
